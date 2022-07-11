@@ -1,0 +1,81 @@
+.cart_product_desc h5{
+    font-weight: bold;
+}
+table thead tr th {
+    border-top: none;
+    border-bottom: none;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    width: 25%;
+    max-width: 25%;
+    font-size: 14px;
+    color: #242424;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+table tbody tr td {
+    border: none;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    width: 25%;
+    max-width: 25%;
+    font-weight: bold;
+}
+
+.d-flex{
+    display: flex!important;
+}
+.qty-btn p{
+    margin-bottom: 0;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 15px;
+    background-color: #f5f7fa;
+    color: #242424;
+    font-size: 14px;
+}
+.qty-btn .quantity{
+    position: relative;
+    z-index: 1;
+}
+.qty-btn .quantity input{
+    text-align: center;
+    background-color: #f5f7fa;
+    height: 40px;
+    width: 60px;
+    border: none;
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+    color: #242424;
+    font-size: 14px;
+}
+.qty-btn .quantity .qty-plus{
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 40px;
+    width: 20px;
+    text-align: center;
+    height: 40px;
+    cursor: pointer;
+    color: #242424;
+    font-size: 10px;
+}
+.qty-btn .quantity .qty-minus{
+    position: absolute;
+    top: 0;
+    right: 40px;
+    line-height: 40px;
+    width: 20px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    color: #242424;
+    font-size: 10px;
+}
+.card-img-top:hover{
+    border: black 1px solid;
+}
