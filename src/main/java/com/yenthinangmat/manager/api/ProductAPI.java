@@ -93,5 +93,19 @@ public class ProductAPI {
         productOutput.setTotalPage((int)Math.ceil((double)productService.count()/9));
         return productOutput;
     }
-
+    @GetMapping("/api/productsell/{page}")
+    public ProductOutput getProductSell(@RequestParam(name="categoryId",required = false,defaultValue = "0") Long categoryId,
+                                        @PathVariable(name = "page")int page){
+        ProductOutput productOutput=new ProductOutput();
+        productOutput.setPage(page);
+        if(categoryId==0){
+            productOutput.setList(productService.getListProduct(PageRequest.of(page-1,9)));
+            productOutput.setTotalPage((int)Math.ceil((double)productService.count()/9));
+        }
+        else{
+            productOutput.setList(productService.getListByCategoryId(categoryId,PageRequest.of(page-1,9)));
+            productOutput.setTotalPage((int)Math.ceil((double)productService.countListByCId(categoryId)/9));
+        }
+        return productOutput;
+    }
 }

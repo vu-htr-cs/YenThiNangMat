@@ -79,3 +79,11 @@ table tbody tr td {
 .card-img-top:hover{
     border: black 1px solid;
 }
+#navPagination{
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 30px;
+}
+#listProduct{
+    min-height:571px;
+}

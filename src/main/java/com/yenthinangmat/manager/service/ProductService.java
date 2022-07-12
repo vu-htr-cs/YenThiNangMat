@@ -16,4 +16,6 @@ public interface ProductService {
     List<ProductDisplayDTO> getListProduct(Pageable pageable);
     long count();
     List<ProductDisplayDTO> getAll();
+    List<ProductDisplayDTO> getListByCategoryId(Long categoryId,Pageable pageable);
+    long countListByCId(Long id);
 }

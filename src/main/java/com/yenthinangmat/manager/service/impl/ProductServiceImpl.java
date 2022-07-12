@@ -76,5 +76,18 @@ public class ProductServiceImpl implements ProductService {
         return res;
     }
 
+    @Override
+    public List<ProductDisplayDTO> getListByCategoryId(Long categoryId, Pageable pageable) {
+        List<ProductEntity> pe=productRepository.findByCategoryId(categoryId,pageable).stream().toList();
+        List<ProductDisplayDTO> res=new ArrayList<>();
+        pe.forEach(item->res.add(ProductMapper.toDisplay(item)));
+        return res;
+    }
+
+    @Override
+    public long countListByCId(Long id) {
+        return productRepository.findAllByCategoryId(id).stream().count();
+    }
+
 
 }
