@@ -27,4 +27,9 @@ public class ProviderServiceImpl implements ProviderService {
     public List<ProviderDTO> getAll() {
         return providerRepository.findAll().stream().map(item-> ProviderMapper.toDTO(item)).collect(Collectors.toList());
     }
+
+    @Override
+    public ProviderEntity findOneE(Long id) {
+        return providerRepository.findFirstById(id);
+    }
 }

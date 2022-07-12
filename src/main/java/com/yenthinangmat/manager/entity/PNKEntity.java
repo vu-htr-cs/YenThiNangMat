@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -32,7 +33,7 @@ public class PNKEntity implements Serializable {
     private String nguoiNhan;
 
     @Column(name="ngayghiso")
-    private Timestamp ngayGhiSo;
+    private Date ngayGhiSo;
 
     @Column(name="loainhapkho")
     private String loaiNhapKho;
@@ -55,6 +56,6 @@ public class PNKEntity implements Serializable {
     @Column(name="deleted_at")
     private Timestamp deletedAt;
 
-    @OneToMany(mappedBy = "pnk")
+    @OneToMany(mappedBy = "pnk",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})//mac dinh @onetomany lazy
     private List<CtpEntity> ctpList;
 }

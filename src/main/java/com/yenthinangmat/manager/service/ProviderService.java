@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProviderService {
     ProviderEntity saveE(ProviderEntity providerEntity);
     List<ProviderDTO> getAll();
+    ProviderEntity findOneE(Long id);
 }

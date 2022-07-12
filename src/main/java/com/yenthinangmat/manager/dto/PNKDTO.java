@@ -3,7 +3,7 @@ package com.yenthinangmat.manager.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 @Getter
 @Setter
 public class PNKDTO {
@@ -17,7 +17,7 @@ public class PNKDTO {
 
     private String nguoiNhan;
 
-    private Timestamp ngayGhiSo;
+    private Date ngayGhiSo;
 
     private String loaiNhapKho;
 

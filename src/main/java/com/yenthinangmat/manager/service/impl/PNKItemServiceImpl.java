@@ -1,40 +1,54 @@
 package com.yenthinangmat.manager.service.impl;
 
-import com.yenthinangmat.manager.entity.PNKItem;
-import com.yenthinangmat.manager.entity.ProductEntity;
-import com.yenthinangmat.manager.service.PNKItemService;
-import com.yenthinangmat.manager.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yenthinangmat.manager.dto.PnkAddDTO;
+import com.yenthinangmat.manager.entity.*;
+import com.yenthinangmat.manager.mapper.PNKMapper;
+import com.yenthinangmat.manager.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 @SessionScope
 @Service
 public class PNKItemServiceImpl implements PNKItemService {
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+    private final PNKService pnkService;
+    private final LCServiceImpl lcService;
+    final
+    ProviderService providerService;
+    final
+    InventoryService inventoryService;
 
-    Map<Long, PNKItem> mymap=new HashMap<>();
+    Map<Long, PNKItem> mymap = new HashMap<>();
+
+    public PNKItemServiceImpl(ProductService productService, PNKService pnkService, LCServiceImpl lcService, ProviderService providerService, InventoryService inventoryService) {
+        this.productService = productService;
+        this.pnkService = pnkService;
+        this.lcService = lcService;
+        this.providerService = providerService;
+        this.inventoryService = inventoryService;
+    }
 
     @Override
-    public void add(Long productid,int giavon,int soluong) {
-        PNKItem cur=mymap.get(productid);
-        if(cur==null){
-            PNKItem newElement= new PNKItem();
-            ProductEntity product=productService.findOneE(productid);
+    public void add(Long productid, int giavon, int soluong) {
+        PNKItem cur = mymap.get(productid);
+        if (cur == null) {
+            PNKItem newElement = new PNKItem();
+            ProductEntity product = productService.findOneE(productid);
             newElement.setProductId(productid);
             newElement.setProductName(product.getProduct_name());
             newElement.setUnit(product.getUnitEntity().getName());
             newElement.setGiavon(giavon);
             newElement.setSoluong(soluong);
-            mymap.put(productid,newElement);
-        }
-        else {
+            mymap.put(productid, newElement);
+        } else {
             cur.setSoluong(cur.getSoluong() + soluong);
-            cur.setGiavon(cur.getGiavon()+giavon);
+            cur.setGiavon(cur.getGiavon() + giavon);
         }
     }
 
@@ -55,7 +69,47 @@ public class PNKItemServiceImpl implements PNKItemService {
 
     @Override
     public int getCount() {
-        if(mymap.isEmpty()) return 0;
+        if (mymap.isEmpty()) return 0;
         return mymap.values().size();
+    }
+
+    @Override
+    public int getSum() {
+        if (mymap.isEmpty()) return 0;
+        else {
+            return mymap.values().stream().mapToInt(item -> item.getSoluong() * item.getGiavon()).sum();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void save(PnkAddDTO pnkAddDTO) {
+        LocationStoreEntity lc = lcService.findOneE(pnkAddDTO.getKhoID());
+        ProviderEntity provider = providerService.findOneE(pnkAddDTO.getNccID());
+        PNKEntity pnk = PNKMapper.toEntity(pnkAddDTO, lc, provider);
+
+        pnk.setCtpList(getAllItems().stream().map(item -> {
+            CtpEntity ctp = new CtpEntity();
+            ProductEntity pe = productService.findOneE(item.getProductId());
+            ctp.setProductCtp(pe);
+            ctp.setSoluong(item.getSoluong());
+            ctp.setGiaVon(item.getGiavon());
+            InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());
+            if (inventoryCur != null) {
+                inventoryCur.setSoluong(item.getSoluong());
+                inventoryCur.setGiavon(item.getGiavon());
+                inventoryService.saveE(inventoryCur);
+            } else {
+                InventoryEntity inventory = new InventoryEntity();
+                inventory.setInventory_pID(pe);
+                inventory.setSoluong(item.getSoluong());
+                inventory.setGiavon(item.getGiavon());
+                inventoryService.saveE(inventory);
+            }
+            return ctp;
+        }).collect(Collectors.toList()));
+        pnkService.save(pnk);
+        mymap.clear();
+
     }
 }

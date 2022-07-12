@@ -59,4 +59,9 @@ public class LCServiceImpl implements LCService {
         locationStoreEntity.setModifiedAt(Timestamp.from(Instant.now()));
         locationStoreRepository.save(locationStoreEntity);
     }
+
+    @Override
+    public LocationStoreEntity findOneE(Long id) {
+        return locationStoreRepository.findFirstById(id);
+    }
 }

@@ -52,4 +52,7 @@ public class ProductEntity implements Serializable {
 
     @OneToMany(mappedBy = "productCtp")
     private List<CtpEntity> ctpList;
+
+    @OneToMany(mappedBy = "inventory_pID",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
+    private List<InventoryEntity> inventory;
 }

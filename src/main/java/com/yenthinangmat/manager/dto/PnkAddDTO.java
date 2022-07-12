@@ -3,11 +3,11 @@ package com.yenthinangmat.manager.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 @Getter
 @Setter
 public class PnkAddDTO {
-    private Long id;
+    private Long id;//null
 
     private Long khoID;
 
@@ -17,11 +17,11 @@ public class PnkAddDTO {
 
     private String nguoiNhan;
 
-    private Timestamp ngayGhiSo;
+    private Date ngayGhiSo;
 
     private String loaiNhapKho;
 
-    private String soChungTu;
+    private String soChungTu;//Tao bang logic
 
-    private int sotien;
+    private int sotien;//Tinh bang hashmap
 }
