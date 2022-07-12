@@ -92,11 +92,12 @@ public class PNKItemServiceImpl implements PNKItemService {
             CtpEntity ctp = new CtpEntity();
             ProductEntity pe = productService.findOneE(item.getProductId());
             ctp.setProductCtp(pe);
+            ctp.setPnk(pnk);
             ctp.setSoluong(item.getSoluong());
             ctp.setGiaVon(item.getGiavon());
             InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());
             if (inventoryCur != null) {
-                inventoryCur.setSoluong(item.getSoluong());
+                inventoryCur.setSoluong(item.getSoluong()+ inventoryCur.getSoluong());
                 inventoryCur.setGiavon(item.getGiavon());
                 inventoryService.saveE(inventoryCur);
             } else {
