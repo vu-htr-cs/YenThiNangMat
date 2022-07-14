@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ComboRepository extends JpaRepository<ComboEntity,Long> {
+    ComboEntity findFirstById(Long id);
 
 }

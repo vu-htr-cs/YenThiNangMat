@@ -6,6 +6,7 @@ import com.yenthinangmat.manager.repository.InventoryRepository;
 import com.yenthinangmat.manager.service.InventoryService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -29,5 +30,11 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryEntity findOne(Long id) {
         return inventoryRepository.findbyProductID(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductQty(int soluong, Long id) {
+        inventoryRepository.updateProduct(soluong,id);
     }
 }

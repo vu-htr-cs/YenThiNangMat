@@ -1,5 +1,6 @@
 package com.yenthinangmat.manager.api;
 
+import com.yenthinangmat.manager.api.Output.ComboOutput;
 import com.yenthinangmat.manager.api.Output.ProductOutput;
 import com.yenthinangmat.manager.dto.ProductAddDTO;
 import com.yenthinangmat.manager.dto.ProductDisplayDTO;
@@ -81,8 +82,6 @@ public class ProductAPI {
         productEntity.getDescriptionEntity().setContent(productAddDTO.getContent());
         productEntity.setPrice(productAddDTO.getPrice());
         productService.update(productEntity);
-//        UnitEntity ue= unitService.findOneE(productAddDTO.getUnitId());
-//        CategoryEntity ce=categoryService.findOneE(productAddDTO.getCategoryId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/api/getproduct/{page}")

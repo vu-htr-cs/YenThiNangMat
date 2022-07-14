@@ -288,13 +288,15 @@
                         <table class="table table-responsive" tabindex="1" style="overflow: hidden; outline: none;">
                             <thead>
                             <tr>
-                                <th></th>
                                 <th>Tên hàng</th>
+                                <th>S.L</th>
                                 <th>Giá</th>
-                                <th>Số lượng</th>
+                                <th>Giảm</th>
+                                <th>T.Tiền</th>
+                                <th></th>
                             </tr>
                             </thead>
-                            <tbody id="listComboTemp" >
+                            <tbody id="listCartTemp" >
                             </tbody>
                         </table>
                     </div>
@@ -308,7 +310,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-content" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" th:value="${categories.id}" th:each="categories:${categoryList}" th:text="${categories.name}"></a>
-                                    <a class="" >Combo</a>
+                                    <a id="comboCa">Combo</a>
 
                                 </div>
                             </div>
@@ -332,6 +334,12 @@
 
                 </div>
 
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button id="luuhoadon">Lưu Hóa Đơn</button>
+                    <button id="inhoadon">In Hóa Đơn</button>
+                </div>
             </div>
 
         </div>

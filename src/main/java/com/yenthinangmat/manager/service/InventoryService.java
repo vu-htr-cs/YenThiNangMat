@@ -8,4 +8,5 @@ public interface InventoryService {
     InventoryEntity saveE(InventoryEntity inventory);
     List<InventoryEntity> saveAllE(List<InventoryEntity> list);
     InventoryEntity findOne(Long id);
+    void updateProductQty(int soluong,Long id);
 }
