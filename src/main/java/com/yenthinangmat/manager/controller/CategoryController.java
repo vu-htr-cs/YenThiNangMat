@@ -17,12 +17,12 @@ public class CategoryController {
 
     @GetMapping("/admin/category")
     public String getAllCategory(){
-        return "quanlynhomhang";
+        return "Category/quanlynhomhang";
     }
     @GetMapping("/admin/category/{id}/edit")
     public String editCate(@PathVariable(name="id") Long id, Model model){
         CategoryDTO res=categoryService.findOne(id);
         model.addAttribute("res",res);
-        return "editcategory";
+        return "Category/editcategory";
     }
 }

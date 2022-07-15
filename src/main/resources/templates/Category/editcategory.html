@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Sửa kho hàng')}"></div>
+    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Sửa nhóm hàng')}"></div>
 </head>
 <body>
 
@@ -9,27 +9,28 @@
 
     <!-- Navigation -->
     <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
+
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12" style="display:flex;justify-content:space-between;align-items:center;">
-                    <h1 class="page-header">Sửa kho hàng</h1>
+                    <h1 class="page-header">Sửa nhóm hàng hóa</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6">
                     <form>
                         <div class="form-group">
-                            <label for="id">Id Kho</label>
+                            <label for="id">Id nhóm hàng</label>
                             <input type="text" class="form-control" id="id" readonly th:value="${res.id}">
                         </div>
                         <div class="form-group">
-                            <label for="code">Mã kho</label>
+                            <label for="code">Mã nhóm hàng</label>
                             <input type="text" class="form-control" id="code" aria-describedby="codeHelp" th:value="${res.code}"
                                    placeholder="Nhập mã nhóm hàng">
                         </div>
                         <div class="form-group">
-                            <label for="cateName">Tên kho</label>
+                            <label for="cateName">Tên nhóm hàng</label>
                             <input type="text" class="form-control" id="cateName" placeholder="Nhập tên nhóm hàng" th:value="${res.name}">
                         </div>
                         <div class="form-group">
@@ -37,55 +38,47 @@
                             <input type="text" class="form-control" id="cateDes" placeholder="" th:value="${res.mota}">
                         </div>
                     </form>
-                    <div>
-                        <button  class="btn btn-secondary" id="huy" >Hủy</button>
-                        <button  class="btn btn-primary" id="sua" >Sửa</button>
-                    </div>
-
+                        <div>
+                            <button  class="btn btn-secondary" id="huy" >Hủy</button>
+                            <button  class="btn btn-primary" id="sua" >Sửa</button>
+                        </div>
                 </div>
             </div>
-
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </div>
-    <!-- /#page-wrapper -->
-
 </div>
-<!-- /#wrapper -->
+
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
 <script>
-    let id=$("#id");
-    let code=$("#code");
-    let name=$("#cateName");
-    let des=$("#cateDes");
-    let data={};
-    $("#huy").on("click",function (){
-        code.val("");
-        name.val("");
-        des.val("");
-    });
-    $("#sua").click(function (){
-        data['id']=id.val();
-        data['code']=code.val();
-        data['name']=name.val();
-        data['mota']=des.val();
-        $.ajax({
-            url:"/api/LocationStore/update",
-            type:"PUT",
-            data:JSON.stringify(data),
-            contentType:'application/json',
-            success:function(result){
-                alert("Sửa thành công!");
-            },
-            error:function(exception){
-                alert("Sửa thất bại!");
-            }
+        let id=$("#id");
+        let code=$("#code");
+        let name=$("#cateName");
+        let des=$("#cateDes");
+        let data={};
+        $("#huy").on("click",function (){
+            code.val("");
+            name.val("");
+            des.val("");
         });
-    });
+        $("#sua").click(function (){
+            data['id']=id.val();
+            data['code']=code.val();
+            data['name']=name.val();
+            data['mota']=des.val();
+            $.ajax({
+                url:"/api/category/update",
+                type:"PUT",
+                data:JSON.stringify(data),
+                contentType:'application/json',
+                success:function(result){
+                    alert("Sửa thành công!");
+                },
+                error:function(exception){
+                    alert("Sửa thất bại!");
+                }
+            });
+        });
 </script>
 
 </body>
 </html>
-
-
