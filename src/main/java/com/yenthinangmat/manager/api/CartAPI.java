@@ -10,13 +10,9 @@ import com.yenthinangmat.manager.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.logging.Handler;
 
 @RestController
 public class CartAPI {
@@ -90,4 +86,26 @@ public class CartAPI {
         cartService.saveInvoice();
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PutMapping("/api/cart/product/updateQty/{id}")
+    public ResponseEntity<?> updatePQty(@PathVariable(name="id")Long id, @RequestParam int qty){
+        cartService.updateProductQty(id,qty);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/api/cart/product/updateD/{id}")
+    public ResponseEntity<?> updatePD(@PathVariable(name="id")Long id, @RequestParam byte discount){
+        cartService.updatePD(id,discount);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/api/cart/combo/updateQty/{id}")
+    public ResponseEntity<?> updateQtyC(@PathVariable(name="id")Long id,@RequestParam int qty){
+        cartService.updateComboQty(id,qty);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/api/cart/combo/updateD/{id}")
+    public ResponseEntity<?> updateCD(@PathVariable(name="id")Long id,@RequestParam byte discount){
+        cartService.updateCD(id,discount);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

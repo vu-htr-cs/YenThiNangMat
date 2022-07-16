@@ -70,7 +70,7 @@ $(".dropdown-item").click(function(){
     AjaxQuery("/api/productsell/1?categoryId="+categoryId);
 });//done
 AjaxQuery("/api/productsell/1");//done
-
+ajaxrendercart();
 $("#comboCa").click(function(){
     $(".dropdown-item").removeClass("active");
     $.ajax({
@@ -126,16 +126,16 @@ function renderCart(res){
             "                                <td class=\"cart_product_desc\">\n" +
             "                                    <h5>"+listProduct[i].productName+"</h5>\n" +
             "                                </td>\n" +
-            "                                <td class=\"qty\">\n" +
-            "                                            <input type=\"text\" class=\"qty-text form-control\" id='qty"+listProduct[i].productID+"' step=\"1\" min=\"1\" max=\"300\" name=\"quantity\" value="+listProduct[i].qty+">\n" +
+            "                                <td class=\"qty qty-product\">\n" +
+            "                                            <input type=\"text\" id='pqty-"+listProduct[i].productId+"' class=\"qty-text form-control\" onchange='updateProductQty("+listProduct[i].productId+")' step=\"1\" min=\"1\" max=\"300\" name=\"quantity\" value="+listProduct[i].qty+">\n" +
             "                                </td>\n" +
 
             "                                <td class=\"price\">\n" +
             "                                    <span style=\"position:relative;top:10px;\">"+listProduct[i].price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</span>\n" +
             "                                </td>\n" +
 
-            "                                <td class=\"discount\">\n" +
-            "                                            <input type=\"text\"  class=\"qty-text form-control\" id='discount"+listProduct[i].productId+"' step=\"1\" min=\"1\" max=\"300\" name=\"discount\" value="+listProduct[i].discount+">\n" +
+            "                                <td class=\"discount-product\">\n" +
+            "                                            <input type=\"text\"  id='pd-"+listProduct[i].productId+"' class=\"qty-text form-control\" onchange='updateProductD("+listProduct[i].productId+")' step=\"1\" min=\"1\" max=\"300\" name=\"discount\" value="+listProduct[i].discount+">\n" +
             "                                </td>\n" +
             "                                <td class=\"total\">\n" +
             "                                    <span style=\"position:relative;top:10px;\">"+((listProduct[i].price*listProduct[i].qty)*((100-listProduct[i].discount)/100)).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</span>\n" +
@@ -151,19 +151,14 @@ function renderCart(res){
             "                                <td class=\"cart_product_desc\">\n" +
             "                                    <h5>"+listCombo[i].comboName+"</h5>\n" +
             "                                </td>\n" +
-
-            "                                <td class=\"qty\">\n" +
-
-            "                                            <input type=\"text\" class=\"qty-text form-control\" id='qty"+listCombo[i].comboId+"' step=\"1\" min=\"1\" max=\"300\" name=\"quantity\" value="+listCombo[i].qty+">\n" +
-
+            "                                <td class=\"qty qty-combo\">\n" +
+            "                                            <input type=\"text\" id='cqty-"+listCombo[i].comboId+"' class=\"qty-text form-control\" onchange='updateComboQty("+listCombo[i].comboId+")' step=\"1\" min=\"1\" max=\"300\" name=\"quantity\" value="+listCombo[i].qty+">\n" +
             "                                </td>\n" +
-
             "                                <td class=\"price\">\n" +
             "                                    <span style=\"position:relative;top:10px;\">"+listCombo[i].price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</span>\n" +
             "                                </td>\n" +
-
-            "                                <td class=\"discount\">\n" +
-            "                                            <input type=\"text\"  class=\"qty-text form-control\" id='discount"+listCombo[i].comboId+"' step=\"1\" min=\"1\" max=\"300\" name=\"discount\" value="+listCombo[i].discount+">\n" +
+            "                                <td class=\"discount-combo\">\n" +
+            "                                            <input type=\"text\" id='cd-"+listCombo[i].comboId+"' class=\"qty-text form-control\" onchange='updateComboD("+listCombo[i].comboId+")' step=\"1\" min=\"1\" max=\"300\" name=\"discount\" value="+listCombo[i].discount+">\n" +
             "                                </td>\n" +
             "                                <td class=\"total\">\n" +
             "                                    <span style=\"position:relative;top:10px;\">"+((listCombo[i].price*listCombo[i].qty)*((100-listCombo[i].discount)/100)).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</span>\n" +
@@ -216,4 +211,45 @@ $("#luuhoadon").click(function(){
         }
 
     });
-})
+});
+function updateComboQty(id){
+    console.log( $("#cqty-"+id).val())
+    $.ajax({
+        url:"/api/cart/combo/updateQty/"+id+"?qty=" + $("#cqty-"+id).val(),
+        type:"PUT",
+        success:ajaxrendercart,
+        error:function(e){
+            console.log("Co bien roi dai nhan oi");
+        }
+    });
+}
+function updateProductQty(id){
+    $.ajax({
+        url:"/api/cart/product/updateQty/"+id+"?qty=" + $("#pqty-"+id).val(),
+        type:"PUT",
+        success:ajaxrendercart,
+        error:function(e){
+            console.log("Co bien roi dai nhan oi");
+        }
+    });
+}
+function updateProductD(id){
+    $.ajax({
+        url:"/api/cart/product/updateD/"+id+"?discount="+$("#pd-"+id).val(),
+        type:"PUT",
+        success:ajaxrendercart,
+        error:function(e){
+            console.log("Co bien roi dai nhan oi");
+        }
+    });
+}
+function updateComboD(id){
+    $.ajax({
+        url:"/api/cart/combo/updateD/"+id+"?discount="+$("#cd-"+id).val(),
+        type:"PUT",
+        success:ajaxrendercart,
+        error:function(e){
+            console.log("Co bien roi dai nhan oi");
+        }
+    });
+}

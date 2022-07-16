@@ -13,23 +13,6 @@ function AjaxQuery(callbackf,url) {
         alert("Unable to connect server!")
     }
 }
-function getProduct(res){
-    let html="";
-    for (let i in res){
-        html+=" <tr>\n" +
-            "                                    <th scope=\"row\"><input type='checkbox' class='product-record' value="+res[i].id+" /></th>\n" +
-            "                                    <td>"+(Number(i)+1)+"</td>\n" +
-            "                                    <td>"+res[i].productName+"</td>"+
-            "                                    <td>"+res[i].unitName+"</td>\n" +
-            "                                    <td>"+res[i].categoryName+"</td>\n" +
-            "                                    <td>"+res[i].price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</td>\n" +
-            "                                    <td>"+(res[i].content==null?" ":res[i].content)+"</td>\n" +
-            "                                    <td><i class=\"fa fa-pencil\"></i> " +
-            "<a href='/admin/product/"+res[i].id+"/edit'>Edit</a></td>\n" +
-            "                                </tr>";
-    }
-    document.getElementById("ProductTable").innerHTML=html;
-}
 
 $("#btn-add").click(function(e){
     e.preventDefault();
@@ -79,7 +62,7 @@ $("#btn-add").click(function(e){
         }
     });
 });
-AjaxQuery(getProduct,"/api/product");
+AjaxQuery(productPaganition,"/api/getproduct/1");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".product-record").forEach(item=>item.checked=true);
@@ -113,7 +96,7 @@ function deleteProduct(){
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getProduct,"/api/product");
+                AjaxQuery(productPaganition,"/api/getproduct/1");
                 $("#formDelete").hide();
             },
             error: function (exception) {
@@ -124,4 +107,34 @@ function deleteProduct(){
     else {
         alert("Vui lòng chọn sản phẩm muốn xóa!"); $("#formDelete").hide();
     }
+}
+function productPaganition(res){
+    let html="";
+    let listRes = res.list;
+    let htmlpagination = "";
+    for (let i = 1; i <= res.totalPage; i++) {
+        if (i == res.page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage("+i+")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    for (let i in listRes) {
+        html+=" <tr>\n" +
+            "                                    <th scope=\"row\"><input type='checkbox' class='product-record' value="+listRes[i].id+" /></th>\n" +
+            "                                    <td>"+(Number(i)+1)+"</td>\n" +
+            "                                    <td>"+listRes[i].productName+"</td>"+
+            "                                    <td>"+listRes[i].unitName+"</td>\n" +
+            "                                    <td>"+listRes[i].categoryName+"</td>\n" +
+            "                                    <td>"+listRes[i].price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</td>\n" +
+            "                                    <td>"+(listRes[i].content==null?" ":listRes[i].content)+"</td>\n" +
+            "                                    <td><i class=\"fa fa-pencil\"></i> " +
+            "<a href='/admin/product/"+listRes[i].id+"/edit'>Edit</a></td>\n" +
+            "                                </tr>";
+    }
+    $("#ProductTable").html(html);
+}
+function getNextPage(page){
+    return AjaxQuery(productPaganition,"/api/getproduct/"+page);
 }
