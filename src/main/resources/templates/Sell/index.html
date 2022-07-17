@@ -4,6 +4,7 @@
     <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Bán hàng')}"></div>
     <link th:href="@{/css/combotemp.css}" rel="stylesheet">
     <link th:href="@{/css/sell.css}" rel="stylesheet">
+    <link th:href="@{/css/receipt.css}" rel="stylesheet">
     <link th:href="@{/css/print.min.css}" rel="stylesheet">
     <script th:src="@{/js/print.min.js}"></script>
 </head>
@@ -12,54 +13,9 @@
 <div id="wrapper">
     <!-- Navigation -->
     <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
-
-    <div id="page-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12" style="display:flex;justify-content:space-between;align-items:center;">
-                    <h1 class="page-header">Tạo Combo</h1>
-                    <div>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formAdd"> Tạo</button>
-                        <button type="button" class="btn btn-danger" id="huy-btn"> Hủy</button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-lg-12" >
-                    <div class="modal fade" id="formAdd" tabindex="-1" role="dialog"  aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header" style="display:flex;justify-content:space-between;">
-                                    <h3 class="modal-title" style="font-weight: bold">Tạo Combo</h3>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="comboName">Tên Combo</label>
-                                            <input type="text" class="form-control" id="comboName"
-                                                   aria-describedby="codeHelp">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="price">Giá</label>
-                                            <input type="text" class="form-control" id="price">
-                                        </div>
-                                    </form>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary" onclick="addCombo()">Tạo</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <script> document.querySelector(".navbar-default.sidebar").remove(); </script>
+    <div>
+        <div class="container-fluid" style="margin-top:51px;">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="cart-table clearfix">
@@ -74,7 +30,7 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody id="listCartTemp" >
+                            <tbody id="listCartTemp">
                             </tbody>
                         </table>
                     </div>
@@ -83,16 +39,23 @@
                     <div class="row" style="background-color: #a16334">
                         <div class="col-lg-12" style="display: flex; flex-direction: row-reverse;">
                             <div class="dropdown">
-                                <button class="btn dropdown-toggle" style="background-color: #a16334;margin-right: 10px; color: white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-tags"></i> Nhóm hàng <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                <button class="btn dropdown-toggle"
+                                        style="background-color: #a16334;margin-right: 10px; color: white" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-tags"></i> Nhóm hàng <i class="fa fa-angle-down"
+                                                                            aria-hidden="true"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-content" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" th:value="${categories.id}" th:each="categories:${categoryList}" th:text="${categories.name}"></a>
+                                    <a class="dropdown-item" th:value="${categories.id}"
+                                       th:each="categories:${categoryList}" th:text="${categories.name}"></a>
                                     <a id="comboCa">Combo</a>
 
                                 </div>
                             </div>
-                            <button id="allProduct" style="background-color: white;margin-right: 10px;">Tất cả hàng hóa</button>
+                            <button id="allProduct" style="background-color: white;margin-right: 10px;">Tất cả hàng
+                                hóa
+                            </button>
 
                         </div>
 
@@ -119,9 +82,68 @@
                     <button id="inhoadon" onclick="printInvoice()">In Hóa Đơn</button>
                 </div>
             </div>
-
         </div>
         <!-- /.container-fluid -->
+    </div>
+    <div class="container" style="display:none">
+        <div class="row" id="receipt">
+            <div class="col-xs-12">
+                <div class="grid invoice">
+                    <div class="grid-body">
+                        <div class="invoice-title" style="text-align:center">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <img src="/img/page/logo.png" alt="logo" height="90" style="position:relative;left:8px;">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 style="color:black;">
+                                        Yến Thị | Nàng Mật <br>
+                                        <span class="small">351 Lê Thánh Tông, TP.Buôn Ma Thuột</span> <br>
+                                        <span class="small">Điện thoại: 0327.555.777</span> <br><br>
+                                        Hóa Đơn Mua Hàng
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-12 col-md-12">
+                                <address>
+                                    <strong>HD:<span id="sohoadon"></span> </strong><br>
+                                    Thu Ngân: <span id="thungan">Nguyên</span><br>
+                                    Khách hàng: <span id="khachhang">Dương</span><br>
+                                    Ngày lập:<span id="ngaylap"></span><br>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr class="line">
+                                        <td><strong>#</strong></td>
+                                        <td class="text-left"><strong>Tên hàng</strong></td>
+                                        <td class="text-center"><strong>Số lượng</strong></td>
+                                        <td class="text-center"><strong>Đơn giá</strong></td>
+                                        <td class="text-center"><strong>CK</strong></td>
+                                        <td class="text-right"><strong>T.Tiền</strong></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="listProductReceipt">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center identity" style="text-align: center"><i>Cảm ơn quý khách, hẹn gặp lại </i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /#page-wrapper -->
 
@@ -129,33 +151,6 @@
 
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
 <script th:src="@{/js/sell.js}"></script>
-<script>
-    function printInvoice(){
-        $.ajax({
-            url:"/api/cart/show",
-            type:"GET",
-            success:function (res){
-                data=res.listProduct;
-                data.append()
-                printJS({
-                    printable:res.listProduct,
-                    type:'json',
-                    properties: [
-                        {field:'productName',displayName:"Sản phẩm"},
-                        {field:'qty',displayName:"Số lượng"},
-                        {field:'price',displayName:"Đơn giá"},
-                        {field:'discount',displayName:"Giảm"},
-                    ],
-                    header:"Yen Thi Nang Mat bmt"
-                });
-            },
-            error:function(exception){
-                console.log(exception);
-            }
-        });
-
-    }
-
-</script>
+<script th:src="@{/js/receipt.js}"></script>
 </body>
 </html>

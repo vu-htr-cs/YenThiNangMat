@@ -89,18 +89,18 @@ public class PNKItemServiceImpl implements PNKItemService {
         PNKEntity pnk = PNKMapper.toEntity(pnkAddDTO, lc, provider);
 
         pnk.setCtpList(getAllItems().stream().map(item -> {
-            CtpEntity ctp = new CtpEntity();
+            CtpEntity ctp = new CtpEntity();//tao ctp voi pnk + product id nhu bang trung gian
             ProductEntity pe = productService.findOneE(item.getProductId());
             ctp.setProductCtp(pe);
             ctp.setPnk(pnk);
             ctp.setSoluong(item.getSoluong());
             ctp.setGiaVon(item.getGiavon());
-            InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());
-            if (inventoryCur != null) {
+            InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());// them vao inventory
+            if (inventoryCur != null && inventoryCur.getGiavon()==item.getGiavon()) {//da co va trung gia von thi tang them so luong
                 inventoryCur.setSoluong(item.getSoluong()+ inventoryCur.getSoluong());
                 inventoryCur.setGiavon(item.getGiavon());
                 inventoryService.saveE(inventoryCur);
-            } else {
+            } else { //khong thi tao cai moi , trung sp nhung khac gia von
                 InventoryEntity inventory = new InventoryEntity();
                 inventory.setInventory_pID(pe);
                 inventory.setSoluong(item.getSoluong());

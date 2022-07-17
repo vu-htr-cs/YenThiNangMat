@@ -1,13 +1,11 @@
 package com.yenthinangmat.manager.controller;
 
 import com.yenthinangmat.manager.dto.CategoryDTO;
-import com.yenthinangmat.manager.dto.ProductAddDTO;
 import com.yenthinangmat.manager.dto.ProductDisplayDTO;
 import com.yenthinangmat.manager.dto.UnitDTO;
 import com.yenthinangmat.manager.service.CategoryService;
 import com.yenthinangmat.manager.service.ProductService;
 import com.yenthinangmat.manager.service.UnitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +18,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class ProductController {
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private UnitService unitService;
-    @Autowired
-    private CategoryService categoryService;
+    private final ProductService productService;
+    private final UnitService unitService;
+    private final CategoryService categoryService;
+
+    public ProductController(ProductService productService, UnitService unitService, CategoryService categoryService) {
+        this.productService = productService;
+        this.unitService = unitService;
+        this.categoryService = categoryService;
+    }
+
     @RequestMapping(value = "/product",method = RequestMethod.GET)
     public String showProduct(Model model){
         List<UnitDTO> listUnit=unitService.getAll();

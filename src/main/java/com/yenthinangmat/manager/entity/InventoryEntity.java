@@ -17,7 +17,7 @@ public class InventoryEntity implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="product_id",nullable = false)
+    @JoinColumn(name="product_id",nullable = false)//Khong duoc la unique
     private ProductEntity inventory_pID;
     private int soluong;
     private int giavon;

@@ -1,6 +1,5 @@
 package com.yenthinangmat.manager.api;
 
-import com.yenthinangmat.manager.api.Output.ComboOutput;
 import com.yenthinangmat.manager.api.Output.ProductOutput;
 import com.yenthinangmat.manager.dto.ProductAddDTO;
 import com.yenthinangmat.manager.dto.ProductDisplayDTO;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;

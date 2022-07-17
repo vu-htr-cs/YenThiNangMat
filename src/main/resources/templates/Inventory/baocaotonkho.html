@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Báo cáo tồn kho')}"></div>
+</head>
+<body>
+
+<div id="wrapper">
+  <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
+  <div id="page-wrapper">
+    <div class="container-fluid">
+      <div class="row" >
+        <div class="col-lg-12" >
+          <table class="table">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col"> <input type="checkbox" id="validCheck" value=""> </th>
+              <th scope="col">STT</th>
+              <th scope="col" >Tên hàng</th>
+              <th scope="col" >DVT</th>
+              <th scope="col"> SL tồn </th>
+              <th scope="col"> Tiền tồn </th>
+            </tr>
+            </thead>
+            <tbody id="InventoryTable">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <!-- Pagination -->
+          <nav id="navPagination" aria-label="navigation">
+            <ul class="pagination justify-content-end mt-50" id="pagination">
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+</div>
+<div th:replace="~{fragments/layoutAdmin::jscript}"></div>
+<script th:src="@{/js/baocaotonkho.js}"></script>
+
+</body>
+</html>
