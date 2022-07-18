@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Quản lý khách hàng')}"></div>
+</head>
+<body>
+<div id="wrapper">
+
+  <!-- Navigation -->
+  <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
+
+  <div id="page-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12" style="display:flex;justify-content:space-between;align-items:center;">
+          <h1 class="page-header">Quản lý khách hàng</h1>
+          <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formAdd"> Thêm</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#formDelete">Xóa</button>
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+        <!-- core dialog -->
+      </div>
+      <!-- POST -->
+      <div class="row">
+        <div class="col-lg-12" >
+          <div class="modal fade" id="formAdd" tabindex="-1" role="dialog" aria-labelledby="addCateCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:flex;justify-content:space-between;">
+                  <h3 class="modal-title" id="addCaLongTitle" style="font-weight: bold">Thêm nhóm hàng</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="name">Tên Khách hàng</label>
+                      <input type="text" class="form-control" id="name" aria-describedby="codeHelp" >
+                    </div>
+                    <div class="form-group">
+                      <label for="birthday">Ngày sinh</label>
+                      <input type="date" class="form-control" id="birthday">
+                    </div>
+                    <div class="form-group">
+                      <label for="address">Địa chỉ</label>
+                      <input type="text" class="form-control" id="address" >
+                    </div>
+                    <div class="form-group">
+                      <label for="phone">Điện thoại</label>
+                      <input type="text" class="form-control" id="phone" >
+                    </div>
+                    <div class="form-group">
+                      <label for="groupCustomer" class="form-label">Chọn nhóm hàng</label>
+                      <select class="form-select form-control" id="groupCustomer" >
+                        <option value="Khách hàng thân thiết">Khách hàng thân thiết</option>
+                        <option value="Khách hàng lẻ">Khách hàng lẻ</option>
+                        <option value="Khách sỉ">Khách hàng sỉ</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="description" class="form-label">Mô tả</label>
+                      <textarea id="description" class="form-control"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                  <button type="button" class="btn btn-primary" onclick="addCustomer()">Thêm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Delete-->
+      <div class="row">
+        <div class="col-lg-12" >
+          <div class="modal fade" id="formDelete" tabindex="-1" role="dialog" aria-labelledby="deleteCateCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:flex;justify-content:space-between;">
+                  <h3 class="modal-title" id="deleteCaLongTitle" style="font-weight: bold">Xóa nhóm hàng</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Bạn có chắc muốn xóa nhóm hàng này không?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+                  <button type="button" class="btn btn-danger" onclick="deleteCustomer()">Xóa</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.row -->
+      <div class="row" >
+        <div class="col-lg-12" >
+          <table class="table">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col"> <input type="checkbox" id="validCheck" value=""> </th>
+              <th scope="col">STT</th>
+              <th scope="col">Tên khách</th>
+              <th scope="col" >Địa chỉ</th>
+              <th scope="col" >Điện thoại</th>
+              <th scope="col"> Ngày sinh </th>
+              <th scope="col">Nhóm</th>
+              <th scope="col">Điểm tích lũy</th>
+              <th scope="col">Mức CK </th>
+              <th scope="col">Mô tả</th>
+              <th scope="col"> Edit </th>
+            </tr>
+            </thead>
+            <tbody id="CustomerTable">
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <!-- Pagination -->
+          <nav id="navPagination" aria-label="navigation">
+            <ul class="pagination justify-content-end mt-50" id="pagination">
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+
+
+</div>
+<div th:replace="~{fragments/layoutAdmin::jscript}"></div>
+<script th:src="@{/js/customer.js}"></script>
+
+</body>
+</html>
