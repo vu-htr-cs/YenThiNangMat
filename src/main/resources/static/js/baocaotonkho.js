@@ -11,29 +11,28 @@ function productPaganition(res) {
     }
     document.querySelector("#pagination").innerHTML = htmlpagination;
     for (let i in listRes) {
-        html += " <div onclick='addToCombo(" + listRes[i].id + ")' class=\"card col-lg-4 col-md-3\">\n" +
-            "                            <img class=\"card-img-top\" src='/img/product-img/" + listRes[i].img + ".jpg' width='189' height='120' alt=\"Card image cap\">\n" +
-            "                            <div class=\"card-body\">\n" +
-            "                                <h5 class=\"card-title\" style='font-weight: bold'>" + listRes[i].productName + "</h5>\n" +
-            "                                <p class=\"card-text\" style=\"color:red\">" + listRes[i].price.toLocaleString('it-IT', {
-                style: 'currency',
-                currency: 'VND'
-            }) + "</p>\n" +
-            "                            </div>\n" +
-            "                        </div>";
+        html +="<tr>\n" +
+            "                                    <td>"+(Number(i)+1)+"</td>\n" +
+            "                                    <td>"+listRes[i].productName+"</td>" +
+            "                                    <td>"+listRes[i].unit+"</td>\n" +
+            "                                    <td>"+listRes[i].soluong +"</td>\n" +
+            "                                    <td>"+listRes[i].tienTonKho.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})+"</td>\n" +
+            "                                </tr>";
     }
-    $("#listProduct").html(html);
+    $("#InventoryTable").html(html);
 }
 
 function getNextPage(page) {
-    return AjaxQuery(productPaganition, "/api/getproduct/" + page);
+    return AjaxQuery(productPaganition, "/api/inventory/" + page);
 }
-
-
-document.getElementById("validCheck").addEventListener("change", () => {
-    if (document.getElementById("validCheck").checked) {
-        document.querySelectorAll(".cate-record").forEach(item => item.checked = true);
-    } else {
-        document.querySelectorAll(".cate-record").forEach(item => item.checked = false);
-    }
-});
+function AjaxQuery(callback,url){
+    $.ajax({
+        url:url,
+        type:"GET",
+        success:callback,
+        error:function (e){
+            console.log(e);
+        }
+    });
+}
+AjaxQuery(productPaganition,"/api/inventory/1");

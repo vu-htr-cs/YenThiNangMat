@@ -5,12 +5,10 @@ import com.yenthinangmat.manager.entity.InventoryEntity;
 import com.yenthinangmat.manager.mapper.InventoryMapper;
 import com.yenthinangmat.manager.repository.InventoryRepository;
 import com.yenthinangmat.manager.service.InventoryService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -42,15 +40,24 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public List<InventoryDTO> getByPage(Pageable pageable) {
-        List<InventoryEntity> temp =inventoryRepository.findAll(pageable).stream().toList();
+    public Collection<InventoryDTO> getByPage() {
+        List<InventoryEntity> temp =inventoryRepository.findAll().stream().toList();
         List<InventoryDTO> res=new ArrayList<>();
-        temp.forEach(item->res.add(InventoryMapper.toDTO(item)));
-        return res;
+        Map<Long,InventoryDTO> mymap=new HashMap<>();
+        temp.forEach(item->{
+            InventoryDTO inventoryDTO= mymap.get(item.getInventory_pID().getId());
+            if(inventoryDTO==null){
+                //Tao moi, tong ton kho = giavon*soluong;
+                InventoryDTO newInventory=InventoryMapper.toDTO(item);
+                newInventory.setTienTonKho(item.getGiavon()*item.getSoluong());
+                mymap.put(item.getInventory_pID().getId(),newInventory);
+            }
+            else{
+                inventoryDTO.setSoluong(inventoryDTO.getSoluong()+ item.getSoluong());
+                inventoryDTO.setTienTonKho(inventoryDTO.getTienTonKho()+ item.getSoluong()*item.getGiavon());
+            }
+        });
+        return mymap.values();
     }
 
-    @Override
-    public long count() {
-        return inventoryRepository.count();
-    }
 }

@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Báo cáo tồn kho')}"></div>
+
 </head>
 <body>
 
 <div id="wrapper">
   <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
-  <div id="page-wrapper">
+  <div id="page-wrapper" >
     <div class="container-fluid">
       <div class="row" >
-        <div class="col-lg-12" >
+        <div class="col-lg-12" style="margin-top:50px;">
           <table class="table">
-            <thead class="thead-dark">
+            <thead class="thead-dark" style="background-color:black;color:white;">
             <tr>
-              <th scope="col"> <input type="checkbox" id="validCheck" value=""> </th>
               <th scope="col">STT</th>
               <th scope="col" >Tên hàng</th>
               <th scope="col" >DVT</th>

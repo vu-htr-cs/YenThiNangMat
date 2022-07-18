@@ -16,6 +16,13 @@
     <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js}"></script>
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js}"></script>
+    <style>
+      #navPagination{
+        display: flex;
+        flex-direction: row-reverse;
+        margin-right: 30px;
+      }
+    </style>
   </th:block>
 </head>
 <body>
@@ -41,6 +48,8 @@
         </a>
         <ul class="dropdown-menu dropdown-user">
           <li><a href="/admin/LocationStore"><i class="fa fa-gear fa-fw"></i> Thiết Lập kho hàng</a>
+          </li>
+          <li><a href="/admin/inventory"><i class="fa fa-gear fa-fw"></i> Báo cáo tồn kho</a>
           </li>
         </ul>
       </li>

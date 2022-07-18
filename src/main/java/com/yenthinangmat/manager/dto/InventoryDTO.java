@@ -10,5 +10,5 @@ public class InventoryDTO {
     private String productName;
     private String unit;
     private int soluong;
-    private int giavon;
+    private int tienTonKho;
 }

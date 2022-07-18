@@ -10,7 +10,7 @@ public class InventoryMapper {
         inventoryDTO.setProductName(inventoryEntity.getInventory_pID().getProduct_name());
         inventoryDTO.setUnit(inventoryEntity.getInventory_pID().getUnitEntity().getName());
         inventoryDTO.setSoluong(inventoryEntity.getSoluong());
-        inventoryDTO.setGiavon(inventoryEntity.getGiavon());
+        //Tien ton kho is null;
         return inventoryDTO;
     }
 }
