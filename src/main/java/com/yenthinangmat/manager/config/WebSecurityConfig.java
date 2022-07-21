@@ -17,9 +17,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().antMatchers("/login", "/api/**").
+        http.authorizeHttpRequests().antMatchers("/signup","/api/**").
                 permitAll().antMatchers("/admin/sell").hasAnyAuthority("ROLE_ADMIN","ROLE_EMPLOYEE")
-                .anyRequest().authenticated().and().formLogin(Customizer.withDefaults()).httpBasic();
+                .anyRequest().authenticated().and()
+                .formLogin().loginPage("/login").defaultSuccessUrl("/admin/sell").permitAll().and().logout().permitAll().and().
+                httpBasic();
         //replace for httpBasic .headers().frameOptions().sameOrigin();
         return http.build();
     }

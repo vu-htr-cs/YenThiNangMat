@@ -9,5 +9,9 @@ public class WebController {
     public String loginPage(){
         return "/LGLO/login";
     }
+    @GetMapping("/signup")
+    public String signUpPage(){
+        return "/LGLO/signup";
+    }
 
 }

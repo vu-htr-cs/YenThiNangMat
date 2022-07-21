@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Đăng nhập </title>
+    <title>Đăng ký</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -22,28 +22,17 @@
                     <div class="login-wrap p-4 p-md-5">
                         <div class="d-flex">
                             <div class="w-100">
-                                <h2 style="font-family: 'Times New Roman'" class="mb-4">Đăng nhập</h2>
+                                <h2 style="font-family: 'Times New Roman'" class="mb-4">Đăng ký</h2>
                             </div>
                             <div class="w-100">
                                 <p class="social-media d-flex justify-content-end">
-                                    <a href="#"
-                                       class="social-icon d-flex align-items-center justify-content-center"><span
-                                            class="fa fa-facebook"></span></a>
-                                    <a href="#"
-                                       class="social-icon d-flex align-items-center justify-content-center"><span
-                                            class="fa fa-twitter"></span></a>
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
                                 </p>
                             </div>
                         </div>
                         <form role="form" name="formLogin" th:action="@{/login}" method="POST" class="signin-form">
                             <fieldset>
-                                <div th:if="${param.error}" class="alert alert-danger">
-                                    Tên người dùng và mật khẩu không hợp lệ.
-                                </div>
-                                <div th:if="${param.logout}" class="alert alert-success">
-                                    Bạn đã được đăng xuất.
-                                </div>
-
                                 <div class="form-group mt-3">
                                     <input type="text" class="form-control" name="username" id="username" required>
                                     <label class="form-control-placeholder" for="username">Username</label>
@@ -51,13 +40,10 @@
                                 <div class="form-group">
                                     <input id="password" type="password" name="password" class="form-control" required>
                                     <label class="form-control-placeholder" for="password">Password</label>
-                                    <span toggle="#password-field"
-                                          class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng
-                                        nhập
-                                    </button>
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng ký</button>
                                 </div>
                                 <div class="form-group d-md-flex">
                                     <div class="w-50 text-left">
@@ -73,7 +59,7 @@
                             </fieldset>
                         </form>
 
-                        <p class="text-center">Chưa có tài khoản? <a href="/signup">Đăng ký</a></p>
+                        <p class="text-center">Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
                     </div>
                 </div>
             </div>
