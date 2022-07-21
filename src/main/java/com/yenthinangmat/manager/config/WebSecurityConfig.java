@@ -3,7 +3,6 @@ package com.yenthinangmat.manager.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -17,8 +16,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().antMatchers("/signup","/api/**").
-                permitAll().antMatchers("/admin/sell").hasAnyAuthority("ROLE_ADMIN","ROLE_EMPLOYEE")
+        http.authorizeHttpRequests().
+                antMatchers("/","/signup").permitAll().
+                antMatchers("/employee/sell","/api/cart/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EMPLOYEE").
+                antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/admin/sell").permitAll().and().logout().permitAll().and().
                 httpBasic();
@@ -47,6 +48,5 @@ public class WebSecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
 
 }
