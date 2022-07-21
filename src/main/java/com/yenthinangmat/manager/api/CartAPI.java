@@ -7,7 +7,6 @@ import com.yenthinangmat.manager.entity.ProductEntity;
 import com.yenthinangmat.manager.service.CartService;
 import com.yenthinangmat.manager.service.ComboService;
 import com.yenthinangmat.manager.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +15,17 @@ import java.util.Collection;
 
 @RestController
 public class CartAPI {
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private ProductService productService;
+    private final CartService cartService;
+    private final ProductService productService;
 
-    @Autowired
-    private ComboService comboService;
+    private final ComboService comboService;
+
+    public CartAPI(CartService cartService, ProductService productService, ComboService comboService) {
+        this.cartService = cartService;
+        this.productService = productService;
+        this.comboService = comboService;
+    }
+
     @GetMapping("/api/cart/product/add/{id}")
     public ResponseEntity<?> addProduct(@PathVariable(name="id") Long id){
         ProductEntity pe= productService.findOneE(id);
