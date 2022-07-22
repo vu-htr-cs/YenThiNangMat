@@ -10,7 +10,6 @@ import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
-@RolesAllowed({})
 public class SellController {
     private final CategoryService categoryService;
 
