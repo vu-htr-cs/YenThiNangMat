@@ -71,7 +71,7 @@
         data['name']=name.val();
         data['mota']=des.val();
         $.ajax({
-            url:"/api/LocationStore/update",
+            url:"/api/admin/LocationStore/update",
             type:"PUT",
             data:JSON.stringify(data),
             contentType:'application/json',

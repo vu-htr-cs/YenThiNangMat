@@ -18,7 +18,7 @@ public class CustomerAPI {
     public CustomerAPI(CustomerService customerService) {
         this.customerService = customerService;
     }
-    @GetMapping("/api/customer/{page}")
+    @GetMapping("/api/admin/customer/{page}")
     public CustomerOuput show(@PathVariable(name="page")int page){
         CustomerOuput customerOuput=new CustomerOuput();
         customerOuput.setPage(page);
@@ -27,7 +27,7 @@ public class CustomerAPI {
         return customerOuput;
 
     }
-    @PostMapping("/api/customer/add")
+    @PostMapping("/api/admin/customer/add")
     public CustomerDTO add(@RequestBody CustomerDTO customerDTO){
         return customerService.add(customerDTO);
     }
@@ -60,7 +60,7 @@ public class CustomerAPI {
             this.list = list;
         }
     }
-    @DeleteMapping("/api/customer/delete")
+    @DeleteMapping("/api/admin/customer/delete")
     public ResponseEntity<?> delete(@RequestParam(name="listId") Long[] listId){
         for(Long id:listId){
             customerService.deleteOne(id);

@@ -35,7 +35,7 @@ function addCategory(){
     let cateDes= $("#cateDes");
 
     $.ajax({
-        url:"/api/category/add",
+        url:"/api/admin/category/add",
         type:"POST",
         data:JSON.stringify({
             "id":null,
@@ -67,7 +67,7 @@ function addCategory(){
         }
     });
 }
-AjaxQuery(getCategory,"/api/category/show");
+AjaxQuery(getCategory,"/api/user/category");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".cate-record").forEach(item=>item.checked=true);
@@ -86,11 +86,11 @@ function deleteCate(){
     if(res.length>0){
         const par = res.join(',');
         $.ajax({
-            url: "/api/category/delete?listId=" + par,
+            url: "/api/admin/category/delete?listId=" + par,
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getCategory, "/api/category/show");
+                AjaxQuery(getCategory, "/api/user/category");
                 $("#formDeleteCategory").hide();
             },
             error: function (error) {

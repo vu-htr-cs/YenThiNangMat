@@ -14,7 +14,7 @@ public class ProviderAPI {
     public ProviderAPI(ProviderService providerService) {
         this.providerService = providerService;
     }
-    @GetMapping("/api/provider/get")
+    @GetMapping("/api/employee/provider/get")
     public List<ProviderDTO> getAll(){
         return providerService.getAll();
     }

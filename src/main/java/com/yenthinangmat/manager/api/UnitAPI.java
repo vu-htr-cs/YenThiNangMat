@@ -20,18 +20,18 @@ public class UnitAPI {
     public List<UnitDTO> showList(){
         return unitService.getAll();
     }
-    @PostMapping("/api/UnitOfMeasure/add")
+    @PostMapping("/api/admin/UnitOfMeasure/add")
     public UnitDTO add(@RequestBody UnitDTO unitDTO){
         return unitService.add(unitDTO);
     }
-    @DeleteMapping("/api/UnitOfMeasure/delete")
+    @DeleteMapping("/api/admin/UnitOfMeasure/delete")
     public ResponseEntity<String> delete(@RequestParam(name="listId") Long[] listId){
         for(Long id:listId){
             unitService.deleteOne(id);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/api/UnitOfMeasure/update")
+    @PutMapping("/api/admin/UnitOfMeasure/update")
     public void updateCate(@RequestBody UnitDTO unitDTO){
         unitService.update(unitDTO);
     }

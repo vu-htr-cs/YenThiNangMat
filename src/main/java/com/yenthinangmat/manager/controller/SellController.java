@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
+@RolesAllowed({})
 public class SellController {
     private final CategoryService categoryService;
 

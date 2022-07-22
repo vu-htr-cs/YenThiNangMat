@@ -74,7 +74,7 @@ ajaxrendercart();
 $("#comboCa").click(function(){
     $(".dropdown-item").removeClass("active");
     $.ajax({
-        url:"/api/productsell/combo/1",
+        url:"/api/user/productsell/combo/1",
         type:"GET",
         success:comboPaganition,
         error:function (e){
@@ -108,7 +108,7 @@ function comboPaganition(res){
 }
 function getNextPageC(page){
     $.ajax({
-        url: "/api/productsell/combo/"+page,
+        url: "/api/user/productsell/combo/"+page,
         type:"GET",
         success:comboPaganition,
         error:function (e){

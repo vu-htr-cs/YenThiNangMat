@@ -143,7 +143,7 @@ function RenderPNK(res){
     }
     document.querySelector("#PNKTable").innerHTML=html;
 }
-AjaxQuery(RenderPNK,"/api/pnk/show");
+AjaxQuery(RenderPNK,"/api/employee/pnk/show");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".pnk-record").forEach(item=>item.checked=true);

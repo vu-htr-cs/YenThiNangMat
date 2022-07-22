@@ -23,7 +23,7 @@ function productPaganition(res) {
 }
 
 function getNextPage(page) {
-    return AjaxQuery(productPaganition, "/api/inventory/" + page);
+    return AjaxQuery(productPaganition, "/api/employee/inventory/" + page);
 }
 function AjaxQuery(callback,url){
     $.ajax({
@@ -35,4 +35,4 @@ function AjaxQuery(callback,url){
         }
     });
 }
-AjaxQuery(productPaganition,"/api/inventory/1");
+AjaxQuery(productPaganition,"/api/employee/inventory/1");

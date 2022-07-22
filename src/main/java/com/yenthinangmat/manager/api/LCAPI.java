@@ -16,17 +16,17 @@ public class LCAPI {
         this.lcService = lcService;
     }
 
-    @GetMapping("/api/LocationStore/show")
+    @GetMapping("/api/employee/LocationStore/show")
     public List<LocationStoreDTO> showAll() {
         return lcService.getAll();
     }
 
-    @PostMapping("/api/LocationStore/add")
+    @PostMapping("/api/admin/LocationStore/add")
     public LocationStoreDTO addLC(@RequestBody LocationStoreDTO locationStoreDTO) {
         return lcService.add(locationStoreDTO);
     }
 
-    @DeleteMapping("/api/LocationStore/delete")
+    @DeleteMapping("/api/admin/LocationStore/delete")
     public ResponseEntity<String> deleteLC(@RequestParam(name = "listId") Long[] listId) {
         for (Long id : listId) {
             lcService.deleteOne(id);
@@ -34,7 +34,7 @@ public class LCAPI {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/api/LocationStore/update")
+    @PutMapping("/api/admin/LocationStore/update")
     public void updateLC(@RequestBody LocationStoreDTO locationStoreDTO) {
         lcService.update(locationStoreDTO);
     }

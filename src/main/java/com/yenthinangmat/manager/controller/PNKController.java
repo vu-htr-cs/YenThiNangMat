@@ -27,7 +27,7 @@ public class PNKController {
         this.productService = productService;
     }
 
-    @GetMapping("/admin/pnk")
+    @GetMapping("/employee/pnk")
     public String addPNK(Model model){
         List<ProductDisplayDTO> productL=productService.getAll();
         List<ProviderDTO> nccL=providerService.getAll();

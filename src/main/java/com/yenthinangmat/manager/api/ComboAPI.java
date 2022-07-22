@@ -15,7 +15,7 @@ public class ComboAPI {
         this.comboService = comboService;
     }
 
-    @GetMapping("/api/productsell/combo/{page}")
+    @GetMapping("/api/user/productsell/combo/{page}")
     public ComboOutput getComboSell(@PathVariable(name="page") int page){
         ComboOutput comboOutput=new ComboOutput();
         comboOutput.setPage(page);

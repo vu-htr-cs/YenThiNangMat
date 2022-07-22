@@ -6,7 +6,7 @@ function addCustomer() {
     let groupCustomer = $("#groupCustomer");
     let description = $("#description");
     $.ajax({
-        url: "/api/customer/add",
+        url: "/api/admin/customer/add",
         type: "POST",
         data: JSON.stringify({
             id: null,
@@ -53,7 +53,7 @@ function addCustomer() {
 }
 
 $.ajax({
-    url: "/api/customer/1",
+    url: "/api/admin/customer/1",
     type: "GET",
     success: customerPaganition,
     error: function (e) {
@@ -94,7 +94,7 @@ function customerPaganition(res) {
 
 function getNextPage(page) {
     $.ajax({
-        url: "/api/customer/" + page,
+        url: "/api/admin/customer/" + page,
         type: "GET",
         success: customerPaganition,
         error: function (e) {
@@ -120,7 +120,7 @@ function deleteCustomer(){
     if(res.length>0){
         const par = res.join(',');
         $.ajax({
-            url: "/api/customer/delete?listId=" + par,
+            url: "/api/admin/customer/delete?listId=" + par,
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");

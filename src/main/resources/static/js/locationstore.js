@@ -34,7 +34,7 @@ function addCategory(){
     let cateDes= $("#cateDes");
 
     $.ajax({
-        url:"/api/LocationStore/add",
+        url:"/api/admin/LocationStore/add",
         type:"POST",
         data:JSON.stringify({
             "id":null,
@@ -66,7 +66,7 @@ function addCategory(){
         }
     });
 }
-AjaxQuery(getCategory,"/api/LocationStore/show");
+AjaxQuery(getCategory,"/api/employee/LocationStore/show");
 function deleteCate(){
     let res=[];
     document.querySelectorAll(".cate-record").forEach(item=>{
@@ -75,11 +75,11 @@ function deleteCate(){
     if(res.length>0){
         const par = res.join(',');
         $.ajax({
-            url: "/api/LocationStore/delete?listId=" + par,
+            url: "/api/admin/LocationStore/delete?listId=" + par,
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getCategory,"/api/LocationStore/show");
+                AjaxQuery(getCategory,"/api/employee/LocationStore/show");
                 $("#formDeleteCategory").hide();
             },
             error: function (error) {

@@ -33,7 +33,7 @@ function addUNO(){
     let mota= $("#mota");
 
     $.ajax({
-        url:"/api/UnitOfMeasure/add",
+        url:"/api/admin/UnitOfMeasure/add",
         type:"POST",
         data:JSON.stringify({
             "id":null,
@@ -71,7 +71,7 @@ function deleteCate(){
     if(res.length>0){
         const par = res.join(',');
         $.ajax({
-            url: "/api/UnitOfMeasure/delete?listId=" + par,
+            url: "/api/admin/UnitOfMeasure/delete?listId=" + par,
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");

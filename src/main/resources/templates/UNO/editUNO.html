@@ -58,7 +58,7 @@
     data['name']=name.val();
     data['mota']=mota.val();
     $.ajax({
-      url:"/api/UnitOfMeasure/update",
+      url:"/api/admin/UnitOfMeasure/update",
       type:"PUT",
       data:JSON.stringify(data),
       contentType:'application/json',

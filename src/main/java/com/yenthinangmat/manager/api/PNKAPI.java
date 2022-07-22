@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class PNKAPI {
+public class    PNKAPI {
     private final PNKService pnkService;
 
     public PNKAPI(PNKService pnkService) {
         this.pnkService = pnkService;
     }
-    @GetMapping("/api/pnk/show")
+    @GetMapping("/api/employee/pnk/show")
     public List<PNKDTO> showList(){
         return pnkService.getAll();
     }

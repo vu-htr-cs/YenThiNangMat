@@ -16,22 +16,22 @@ public class CategoryAPI {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/api/category/show")
+    @GetMapping("/api/user/category")
     public List<CategoryDTO> showAll(){
         return categoryService.getAll();
     }
-    @PostMapping("/api/category/add")
+    @PostMapping("/api/admin/category/add")
     public CategoryDTO addCate(@RequestBody CategoryDTO categoryDTO){
         return categoryService.add(categoryDTO);
     }
-    @DeleteMapping("/api/category/delete")
+    @DeleteMapping("/api/admin/category/delete")
     public ResponseEntity<String> deleteCate(@RequestParam(name="listId") Long[] listId){
         for(Long id:listId){
             categoryService.deleteOne(id);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/api/category/update")
+    @PutMapping("/api/admin/category/update")
     public void updateCate(@RequestBody CategoryDTO categoryDTO){
           categoryService.update(categoryDTO);
     }

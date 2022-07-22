@@ -38,10 +38,6 @@ public class ProductAPI {
         this.categoryService = categoryService;
         this.descriptionService = descriptionService;
     }
-    @GetMapping("/api/product")
-    public List<ProductDisplayDTO> showProduct(){
-        return productService.showAllProduct();
-    }
     @PostMapping("/api/product/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file")MultipartFile file){
         Path imgPath=Paths.get("src","main","resources","static","img","product-img");

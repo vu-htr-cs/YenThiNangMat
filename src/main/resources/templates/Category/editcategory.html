@@ -66,7 +66,7 @@
             data['name']=name.val();
             data['mota']=des.val();
             $.ajax({
-                url:"/api/category/update",
+                url:"/api/admin/category/update",
                 type:"PUT",
                 data:JSON.stringify(data),
                 contentType:'application/json',
