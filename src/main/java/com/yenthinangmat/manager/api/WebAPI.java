@@ -6,6 +6,7 @@ import com.yenthinangmat.manager.dto.request.SignInForm;
 import com.yenthinangmat.manager.dto.response.JwtResponse;
 import com.yenthinangmat.manager.service.RoleService;
 import com.yenthinangmat.manager.service.UserService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +46,10 @@ public class WebAPI {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token=jwtTokenProvider.generateToken(authentication);
         UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token,userPrinciple.getUsername(),userPrinciple.getAuthorities()));
+        HttpHeaders headers= new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        headers.add("Set-cookie","jwt="+token);
+        return ResponseEntity.ok().headers(headers).body(new JwtResponse(userPrinciple.getUsername(),userPrinciple.getAuthorities()));
     }
 
 }
