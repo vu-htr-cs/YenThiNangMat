@@ -18,21 +18,41 @@
         <div class="container-fluid" style="margin-top:51px;">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="cart-table clearfix">
-                        <table class="table table-responsive" tabindex="1" style="overflow: hidden; outline: none;">
-                            <thead>
-                            <tr>
-                                <th>Tên hàng</th>
-                                <th>S.L</th>
-                                <th>Giá</th>
-                                <th>Giảm</th>
-                                <th>T.Tiền</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody id="listCartTemp">
-                            </tbody>
-                        </table>
+                    <div class="row" style="margin-top:20px;margin-bottom:20px">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select id="loaiKhachHang" class="form-control">
+                                <option>Khách hàng thân thiết</option>
+                                <option> Khách hàng lẻ</option>
+                                <option> Khách hàng sỉ</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input id="SelectCustomer" class="form-control" type="text" list="allcustomer" placeholder="Nhập tên sản phẩm">
+                            <datalist id="allcustomer">
+                                <option th:each="customer:${customerL}" th:value="${customer.name}+' '+${customer.phone}" th:id="'cus'+${customer.id}"></option>
+
+                            </datalist>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="cart-table clearfix">
+                            <table class="table table-responsive" tabindex="1" style="overflow: hidden; outline: none;">
+                                <thead>
+                                <tr>
+                                    <th>Tên hàng</th>
+                                    <th>S.L</th>
+                                    <th>Giá</th>
+                                    <th>Giảm</th>
+                                    <th>T.Tiền</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="listCartTemp">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6" style="background-color: #F5F5F5">
@@ -93,7 +113,8 @@
                         <div class="invoice-title" style="text-align:center">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <img src="/img/page/logo.png" alt="logo" height="90" style="position:relative;left:8px;">
+                                    <img src="/img/page/logo.png" alt="logo" height="90"
+                                         style="position:relative;left:8px;">
                                 </div>
                             </div>
                             <br>
@@ -138,7 +159,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 text-center identity" style="text-align: center"><i>Cảm ơn quý khách, hẹn gặp lại </i></div>
+                            <div class="col-md-12 text-center identity" style="text-align: center"><i>Cảm ơn quý khách,
+                                hẹn gặp lại </i></div>
                         </div>
                     </div>
                 </div>
