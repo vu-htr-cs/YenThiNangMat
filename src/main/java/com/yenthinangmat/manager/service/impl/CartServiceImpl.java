@@ -1,36 +1,36 @@
 package com.yenthinangmat.manager.service.impl;
 
-import com.yenthinangmat.manager.entity.CartItem;
-import com.yenthinangmat.manager.entity.CartItemCombo;
-import com.yenthinangmat.manager.entity.ComboProductEntity;
-import com.yenthinangmat.manager.entity.ProductEntity;
-import com.yenthinangmat.manager.mapper.ComboMapper;
+import com.yenthinangmat.manager.entity.*;
 import com.yenthinangmat.manager.service.CartService;
 import com.yenthinangmat.manager.service.ComboService;
 import com.yenthinangmat.manager.service.InventoryService;
 import com.yenthinangmat.manager.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SessionScope
 @Service
 public class CartServiceImpl implements CartService {
     final
     InventoryService inventoryService;
-    @Autowired
+    final
     ComboService comboService;
-    @Autowired
+    final
     ProductService productService;
 
     Map<Long,CartItem> listProduct=new HashMap<>();
     Map<Long,CartItemCombo> listCombo=new HashMap<>();
 
-    public CartServiceImpl(InventoryService inventoryService) {
+    public CartServiceImpl(InventoryService inventoryService, ComboService comboService, ProductService productService) {
         this.inventoryService = inventoryService;
+        this.comboService = comboService;
+        this.productService = productService;
     }
 
     @Override
@@ -139,6 +139,32 @@ public class CartServiceImpl implements CartService {
         clear();
 
     }
+
+    @Override
+    public int getSubTotal() {
+        return listProduct.values().stream().map(item->item.getPrice()* item.getQty()).reduce(0, Integer::sum)+listCombo.values().stream()
+                .map(item->item.getPrice()*item.getQty()).reduce(0, Integer::sum);
+    }
+
+    @Override
+    public int getCK() {
+        return listProduct.values().stream().map(item->item.getPrice()* item.getQty()*item.getDiscount()/100).reduce(0, Integer::sum)+listCombo.values().stream()
+                .map(item->item.getPrice()*item.getQty()*item.getDiscount()/100).reduce(0, Integer::sum);
+    }
+
+    @Override
+    @Transactional
+    public void fillListDetailReceipt(ReceiptEntity receiptEntity) {
+        listProduct.values().
+                forEach(item->receiptEntity.getListDetail().
+                        add(new DetailReceiptEntity(item.getProductName(),item.getQty(),receiptEntity))
+                );
+        listCombo.values().
+                forEach(item->receiptEntity.getListDetail().
+                        add(new DetailReceiptEntity(item.getComboName(),item.getQty(),receiptEntity))
+                );
+    }
+
     public class ProductQty{
         private Long productId;
         private int qty;
@@ -159,4 +185,5 @@ public class CartServiceImpl implements CartService {
             this.qty = qty;
         }
     }
+
 }

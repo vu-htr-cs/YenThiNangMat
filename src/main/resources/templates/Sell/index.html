@@ -28,9 +28,9 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4"></div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input id="SelectCustomer" class="form-control" type="text" list="allcustomer" placeholder="Nhập tên sản phẩm">
+                            <input id="SelectCustomer" class="form-control" type="text" list="allcustomer" placeholder="Nhập số điện thoại">
                             <datalist id="allcustomer">
-                                <option th:each="customer:${customerL}" th:value="${customer.name}+' '+${customer.phone}" th:id="'cus'+${customer.id}"></option>
+                                <option th:each="customer:${customerL}" th:value="${customer.name}+' '+${customer.phone}" th:id="${customer.id}"></option>
 
                             </datalist>
                         </div>
@@ -98,7 +98,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <button id="luuhoadon">Lưu Hóa Đơn</button>
                     <button id="inhoadon" onclick="printInvoice()">In Hóa Đơn</button>
                 </div>
             </div>
@@ -135,7 +134,7 @@
                                 <address>
                                     <strong>HD:<span id="sohoadon"></span> </strong><br>
                                     Thu Ngân: <span id="thungan">Nguyên</span><br>
-                                    Khách hàng: <span id="khachhang">Dương</span><br>
+                                    Khách hàng: <span id="khachhang"></span><br>
                                     Ngày lập:<span id="ngaylap"></span><br>
                                 </address>
                             </div>

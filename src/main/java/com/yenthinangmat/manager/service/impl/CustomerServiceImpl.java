@@ -54,6 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerEntity findOneE(Long id) {
         return customerRepository.findFirstById(id);
     }

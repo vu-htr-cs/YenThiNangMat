@@ -3,6 +3,7 @@ package com.yenthinangmat.manager.service;
 import com.yenthinangmat.manager.entity.CartItem;
 import com.yenthinangmat.manager.entity.CartItemCombo;
 import com.yenthinangmat.manager.entity.Component;
+import com.yenthinangmat.manager.entity.ReceiptEntity;
 
 import java.util.Collection;
 
@@ -19,4 +20,7 @@ public interface CartService {
     void updatePD(Long id,byte discount);
     void updateCD(Long id,byte discount);
     void saveInvoice();
+    int getSubTotal();
+    int getCK();
+    void fillListDetailReceipt(ReceiptEntity receiptEntity);
 }

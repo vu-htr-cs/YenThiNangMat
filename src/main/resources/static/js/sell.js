@@ -201,17 +201,6 @@ function removeProduct(id){
 
     });
 }
-$("#luuhoadon").click(function(){
-    $.ajax({
-        url:"/api/cart/save/",
-        type:"GET",
-        success:ajaxrendercart,
-        error:function (e){
-            console.log(e);
-        }
-
-    });
-});
 function updateComboQty(id){
     console.log( $("#cqty-"+id).val())
     $.ajax({

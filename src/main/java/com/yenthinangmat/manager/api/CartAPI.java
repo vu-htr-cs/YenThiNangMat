@@ -1,12 +1,12 @@
 package com.yenthinangmat.manager.api;
 
-import com.yenthinangmat.manager.entity.CartItem;
-import com.yenthinangmat.manager.entity.CartItemCombo;
-import com.yenthinangmat.manager.entity.ComboEntity;
-import com.yenthinangmat.manager.entity.ProductEntity;
+import com.yenthinangmat.manager.dto.request.InvoiceRequest;
+import com.yenthinangmat.manager.entity.*;
 import com.yenthinangmat.manager.service.CartService;
 import com.yenthinangmat.manager.service.ComboService;
 import com.yenthinangmat.manager.service.ProductService;
+import com.yenthinangmat.manager.service.ReceiptService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +19,8 @@ public class CartAPI {
     private final ProductService productService;
 
     private final ComboService comboService;
+    @Autowired
+    ReceiptService receiptService;
 
     public CartAPI(CartService cartService, ProductService productService, ComboService comboService) {
         this.cartService = cartService;
@@ -86,7 +88,7 @@ public class CartAPI {
     }
     @GetMapping("/api/cart/save")
     public ResponseEntity<?> save(){
-        cartService.saveInvoice();
+        cartService.saveInvoice();// Tru kho
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/api/cart/product/updateQty/{id}")
@@ -109,6 +111,11 @@ public class CartAPI {
         cartService.updateCD(id,discount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
+    @PostMapping("/api/cart/insertListInvoice")
+    public ResponseEntity<?> insertListInvoice(@RequestBody InvoiceRequest invoiceRequest){
+        ReceiptEntity receipt=receiptService.saveE(invoiceRequest,cartService.getCK(), cartService.getSubTotal());
+        cartService.fillListDetailReceipt(receipt);
+        receiptService.save(receipt);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
