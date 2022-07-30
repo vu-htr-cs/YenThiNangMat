@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SessionScope
 @Service
@@ -155,14 +156,48 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void fillListDetailReceipt(ReceiptEntity receiptEntity) {
-        listProduct.values().
-                forEach(item->receiptEntity.getListDetail().
-                        add(new DetailReceiptEntity(item.getProductName(),item.getQty(),item.getDiscount(),receiptEntity))
-                );
-        listCombo.values().
-                forEach(item->receiptEntity.getListDetail().
-                        add(new DetailReceiptEntity(item.getComboName(),item.getQty(),item.getDiscount(),receiptEntity))
-                );
+        Collection<CartItem> mylistP=listProduct.values();
+        Collection<CartItemCombo> mylistC=listCombo.values();
+        Map<Long,DetailReceiptEntity> mymap=new HashMap<>();
+        mylistP.forEach(item->{
+            DetailReceiptEntity detail=mymap.get(item.getProductId());
+            if(detail==null){
+                detail=new DetailReceiptEntity();
+                detail.setCk(item.getDiscount());
+                detail.setDrpID(productService.findOneE(item.getProductId()));
+                detail.setQty(item.getQty());
+                detail.setProductName(detail.getDrpID().getProduct_name());
+                detail.setReceiptEntity(receiptEntity);
+                mymap.put(item.getProductId(),detail);
+            }
+            else{
+                detail.setQty(detail.getQty()+item.getQty());
+            }
+        });
+        mylistC.forEach(item -> { //item la 1 combo
+            List<ComboProductEntity> list=comboService.findOneE(item.getComboId()).getCplist();
+            list.forEach(comboproduct->{ //combo product la trong combo do co product nao- soluong bao nhieu
+                DetailReceiptEntity detail=mymap.get(comboproduct.getProduct().getId());
+                if(detail==null){
+                    detail=new DetailReceiptEntity();
+                    detail.setCk(item.getDiscount());
+                    detail.setDrpID(productService.findOneE(comboproduct.getProduct().getId()));
+                    detail.setQty(comboproduct.getQty()* item.getQty());
+                    detail.setProductName(detail.getDrpID().getProduct_name());
+                    detail.setReceiptEntity(receiptEntity);
+                    mymap.put(comboproduct.getProduct().getId(),detail);
+                }
+                else{
+                    detail.setQty(detail.getQty() + item.getQty()* comboproduct.getQty());
+                    //2 combo trung nhau 1sp -> giam gia bi ghi de;
+                }
+            });
+        });
+        // 1 map ds san pham + soluong
+        mymap.forEach((id,productqty)->{
+            inventoryService.updateProductQty(productqty.getQty(),id);
+        });
+        receiptEntity.setListDetail(mymap.values().stream().collect(Collectors.toList()));
     }
 
     public class ProductQty{

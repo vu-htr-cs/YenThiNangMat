@@ -55,4 +55,6 @@ public class ProductEntity implements Serializable {
 
     @OneToMany(mappedBy = "inventory_pID",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
     private List<InventoryEntity> inventory;
+    @OneToMany(mappedBy = "drpID",fetch = FetchType.LAZY)
+    private List<DetailReceiptEntity> listDRP;
 }
