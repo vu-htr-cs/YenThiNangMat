@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -20,7 +20,7 @@ public class ReceiptEntity implements Serializable {
     @Column(name="shd")
     private String shd;
     @Column(name="ngaylap")
-    private Date ngayLap;
+    private Timestamp ngayLap;
     @Column(name="tongcong")
     private int tongCong;
     @Column(name="ck")

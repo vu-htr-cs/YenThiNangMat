@@ -157,11 +157,11 @@ public class CartServiceImpl implements CartService {
     public void fillListDetailReceipt(ReceiptEntity receiptEntity) {
         listProduct.values().
                 forEach(item->receiptEntity.getListDetail().
-                        add(new DetailReceiptEntity(item.getProductName(),item.getQty(),receiptEntity))
+                        add(new DetailReceiptEntity(item.getProductName(),item.getQty(),item.getDiscount(),receiptEntity))
                 );
         listCombo.values().
                 forEach(item->receiptEntity.getListDetail().
-                        add(new DetailReceiptEntity(item.getComboName(),item.getQty(),receiptEntity))
+                        add(new DetailReceiptEntity(item.getComboName(),item.getQty(),item.getDiscount(),receiptEntity))
                 );
     }
 

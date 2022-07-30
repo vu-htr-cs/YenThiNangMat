@@ -86,11 +86,6 @@ public class CartAPI {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-    @GetMapping("/api/cart/save")
-    public ResponseEntity<?> save(){
-        cartService.saveInvoice();// Tru kho
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
     @PutMapping("/api/cart/product/updateQty/{id}")
     public ResponseEntity<?> updatePQty(@PathVariable(name="id")Long id, @RequestParam int qty){
         cartService.updateProductQty(id,qty);
@@ -116,6 +111,7 @@ public class CartAPI {
         ReceiptEntity receipt=receiptService.saveE(invoiceRequest,cartService.getCK(), cartService.getSubTotal());
         cartService.fillListDetailReceipt(receipt);
         receiptService.save(receipt);
+        cartService.saveInvoice();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

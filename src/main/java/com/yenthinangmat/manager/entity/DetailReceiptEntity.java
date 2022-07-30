@@ -20,12 +20,16 @@ public class DetailReceiptEntity implements Serializable {
     @Column(name="qty")
     private int qty;
 
+    @Column(name="ck")
+    private byte ck;
+
     public DetailReceiptEntity() {
     }
 
-    public DetailReceiptEntity(String productName, int qty, ReceiptEntity receiptEntity) {
+    public DetailReceiptEntity(String productName, int qty, byte ck, ReceiptEntity receiptEntity) {
         this.productName = productName;
         this.qty = qty;
+        this.ck = ck;
         this.receiptEntity = receiptEntity;
     }
 

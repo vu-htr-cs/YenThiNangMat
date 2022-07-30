@@ -82,7 +82,7 @@ function renderReceipt(res) {
     $("#ngaylap").text((d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear());
     $("#sohoadon").text("HDL" + d.getFullYear() + (d.getMonth() + 1) + d.getDate() + d.getHours() + d.getMinutes() + d.getSeconds());
 }
-$("#SelectCustomer").change(function (e){
+$("#SelectCustomer").change(function (){
     $("#khachhang").text($(this).val());
 });
 function printInvoice() {
@@ -110,17 +110,8 @@ function printInvoice() {
                     soHoaDon:$("#sohoadon").text(),
                     customeID:customeID?Number(customeID):null
                 }),
-                dataType:'json',
                 success:function(res){
-                    $.ajax({
-                        url: "/api/cart/save/",// Tru kho
-                        type: "GET",
-                        success: ajaxrendercart,
-                        error: function (e) {
-                            console.log(e);
-                        }
-
-                    });
+                    ajaxrendercart();
                 },
                 error:function(exception){
                     console.log(exception);
@@ -131,7 +122,4 @@ function printInvoice() {
             console.log(e);
         }
     });//In hoa don ra ngoai
-
-
-
 }

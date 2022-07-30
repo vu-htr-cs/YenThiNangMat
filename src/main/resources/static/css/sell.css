@@ -42,3 +42,8 @@
     min-height:571px;
 }
 /* Change the background color of the dropdown button when the dropdown content is shown */
+#inhoadon{
+    height:90px;
+    width:120px;
+    font-size:18px;
+}
