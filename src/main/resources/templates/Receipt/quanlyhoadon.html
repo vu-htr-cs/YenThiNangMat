@@ -2,47 +2,80 @@
 <html lang="en">
 <head>
     <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Danh sách hóa đơn bán hàng')}"></div>
+    <style>
+        .d-flex {
+            display: flex;
+        }
+        .mr-20{
+            margin-right:20px
+        }
+    </style>
 </head>
 <body>
 <div id="wrapper">
     <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
-    <div id="page-wrapper" >
+    <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12" style="display:flex;justify-content:space-between;align-items:center;">
-                    <h1 class="page-header">Nhóm Hàng Hóa</h1>
+                    <h1 class="page-header">Danh sách hóa đơn</h1>
                     <div>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#formDelete">Xóa</button>
                     </div>
                 </div>
-                <!-- /.col-lg-12 -->
-                <!-- core dialog -->
+                <!--Data toggle-->
+
             </div>
-            <div class="row" >
+            <!--Delete-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="modal fade" id="formDelete" tabindex="-1" role="dialog"
+                         aria-labelledby="deleteReCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="display:flex;justify-content:space-between;">
+                                    <h3 class="modal-title" id="deleteReLongTitle" style="font-weight: bold">Xóa hóa
+                                        đơn</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn có chắc muốn xóa những hóa đơn này không?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteReceipt()">Xóa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--list hoa don-->
+            <div class="row">
                 <div class="col-lg-12">
                     <table class="table">
                         <thead class="thead-dark" style="background-color:black;color:white;">
                         <tr>
+                            <th scope="col"><input type="checkbox" id="validCheck" value=""></th>
                             <th scope="col">STT</th>
-                            <th scope="col" >Tên hàng</th>
-                            <th scope="col" >DVT</th>
-                            <th scope="col"> SL tồn </th>
-                            <th scope="col"> Tiền tồn </th>
+                            <th scope="col">Số phiếu</th>
+                            <th scope="col">Ngày</th>
+                            <th scope="col"> Khách hàng</th>
+                            <th scope="col"> Tiền hàng</th>
+                            <th scope="col"> Giảm giá</th>
+                            <th scope="col"> Tổng tiền</th>
+                            <th scope="col"> View</th>
                         </tr>
                         </thead>
-                        <tbody id="InventoryTable">
+                        <tbody id="ReceiptTable">
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <!-- Pagination -->
-                    <nav id="navPagination" aria-label="navigation">
-                        <ul class="pagination justify-content-end mt-50" id="pagination">
-                        </ul>
-                    </nav>
-                </div>
+            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
+
             </div>
         </div>
         <!-- /.container-fluid -->
@@ -50,5 +83,6 @@
 </div>
 
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
+<script th:src="@{/js/quanlyhoadon.js}"></script>
 </body>
 </html>

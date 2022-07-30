@@ -29,7 +29,7 @@ public class InventoryAPI {
             res.add(temp.get(i));
         }
         inventoryOutput.setList(res);
-        inventoryOutput.setTotalPage((int)Math.ceil((double)res.size()/9));
+        inventoryOutput.setTotalPage((int)Math.ceil((double)temp.size()/9));
         return inventoryOutput;
     }
 }

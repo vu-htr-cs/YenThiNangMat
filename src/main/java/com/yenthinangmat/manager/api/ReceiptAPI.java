@@ -1,23 +1,68 @@
 package com.yenthinangmat.manager.api;
 
 import com.yenthinangmat.manager.api.Output.ReceiptOutput;
+import com.yenthinangmat.manager.dto.ReceiptDTO;
 import com.yenthinangmat.manager.service.ReceiptService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 public class ReceiptAPI {
-    @Autowired
-    private ReceiptService receiptService;
-    @GetMapping("/admin/receipt/{page}")
-    public ReceiptOutput listReceipt(@PathVariable(name="page") int page){
+    private final ReceiptService receiptService;
+
+    public ReceiptAPI(ReceiptService receiptService) {
+        this.receiptService = receiptService;
+    }
+
+    @GetMapping("/api/admin/receipt/{page}")
+    public ReceiptOutput listReceipt(@PathVariable(name="page") int page,
+                                     @RequestParam(name ="start",required = false,defaultValue = "2022-07-29")String start,@RequestParam(name="end",required = false,defaultValue = "1970-01-01")String end){
         ReceiptOutput receiptOutput=new ReceiptOutput();
         receiptOutput.setPage(page);
-        receiptOutput.setListReceipt(receiptService.getAll(PageRequest.of(page-1,9, Sort.by("ngayLap").descending())));
+        if(start.equals("2022-07-29") && end.equals("1970-01-01")){
+            receiptOutput.setListReceipt(receiptService.getAll(PageRequest.of(page-1,9, Sort.by("ngayLap").descending())));
+            receiptOutput.setTotalPage((int)Math.ceil((double)receiptService.count()/9));
+        }
+        else {
+            int offset=(page-1)*9;
+            List<ReceiptDTO> res=new ArrayList<>();
+            List<ReceiptDTO> temp;
+            if(!end.equals("1970-01-01")){
+                temp = receiptService.
+                        getAll(new Timestamp(Date.valueOf(start).getTime()), new Timestamp(Date.valueOf(end).getTime()));
+                for(int i=offset;i<Math.min(offset+9,temp.size());i++){
+                    res.add(temp.get(i));
+                }
+            }
+            else{
+                temp = receiptService.
+                        getAll(new Timestamp(Date.valueOf(start).getTime()), new Timestamp(new Date(System.currentTimeMillis()).getTime()));
+                for(int i=offset;i<Math.min(offset+9,temp.size());i++){
+                    res.add(temp.get(i));
+                }
+            }
+            receiptOutput.setListReceipt(res);
+            receiptOutput.setTotalPage((int)Math.ceil((double)temp.size()/9));
+
+        }
+
         return receiptOutput;
     }
+    @DeleteMapping("/api/admin/receipt/delete")
+    public ResponseEntity<?> deleteReceipt(@RequestParam(name="listId") Long[] listId){
+        for(Long id:listId){
+            receiptService.deleteOne(id);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

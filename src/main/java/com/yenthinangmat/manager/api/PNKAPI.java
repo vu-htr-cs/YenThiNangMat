@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 public class    PNKAPI {
     private final PNKService pnkService;
-
     public PNKAPI(PNKService pnkService) {
         this.pnkService = pnkService;
     }

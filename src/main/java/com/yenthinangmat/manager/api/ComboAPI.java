@@ -20,7 +20,7 @@ public class ComboAPI {
         ComboOutput comboOutput=new ComboOutput();
         comboOutput.setPage(page);
         comboOutput.setList(comboService.getListCombo(PageRequest.of(page-1,9)));
-        comboOutput.setTotalPage((int)Math.ceil((double)comboService.count()/9));System.out.println(comboService.count());
+        comboOutput.setTotalPage((int)Math.ceil((double)comboService.count()/9));
         return comboOutput;
     }
 }

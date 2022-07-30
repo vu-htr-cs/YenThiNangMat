@@ -1,21 +1,20 @@
 package com.yenthinangmat.manager.service.impl;
 
-import com.yenthinangmat.manager.api.Output.ReceiptOutput;
 import com.yenthinangmat.manager.dto.ReceiptDTO;
 import com.yenthinangmat.manager.dto.request.InvoiceRequest;
+import com.yenthinangmat.manager.entity.DetailReceiptEntity;
 import com.yenthinangmat.manager.entity.ReceiptEntity;
 import com.yenthinangmat.manager.mapper.ReceiptMapper;
 import com.yenthinangmat.manager.repository.ReceiptRepository;
 import com.yenthinangmat.manager.service.CustomerService;
+import com.yenthinangmat.manager.service.DetailReceiptService;
 import com.yenthinangmat.manager.service.ReceiptService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,11 +22,15 @@ import java.util.stream.Collectors;
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
     final
+    DetailReceiptService detailReceiptService;
+
+    final
     CustomerService customerService;
 
-    public ReceiptServiceImpl(CustomerService customerService, ReceiptRepository receiptRepository) {
+    public ReceiptServiceImpl(CustomerService customerService, ReceiptRepository receiptRepository, DetailReceiptService detailReceiptService) {
         this.customerService = customerService;
         this.receiptRepository = receiptRepository;
+        this.detailReceiptService = detailReceiptService;
     }
     final
     ReceiptRepository receiptRepository;
@@ -59,6 +62,27 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public List<ReceiptDTO> getAll(Pageable pageable) {
-       return receiptRepository.findAll(pageable).stream().map(item-> ReceiptMapper.toDTO(item)).collect(Collectors.toList());
+       return receiptRepository.findAll(pageable).stream().map(ReceiptMapper::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReceiptDTO> getAll(Timestamp start, Timestamp end) {
+        return receiptRepository.getAllFromStarToEnd(start,end).stream().map(ReceiptMapper::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return receiptRepository.count();
+    }
+
+    @Override
+    public void deleteOne(Long id) {
+        receiptRepository.deleteById(id);
+    }
+    @Override
+    public List<String> getDetail(Long id){
+        List<DetailReceiptEntity> temp=detailReceiptService.getAllByReceiptID(id);
+        return temp.stream().map(item->
+             item.getProductName()+" x"+item.getQty() +", CK:"+item.getCk()+"%").collect(Collectors.toList());
     }
 }

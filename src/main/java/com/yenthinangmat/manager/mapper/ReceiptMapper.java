@@ -10,8 +10,8 @@ public class ReceiptMapper {
         receiptDTO.setShd(receiptEntity.getShd());
         receiptDTO.setNgay(receiptEntity.getNgayLap());
         receiptDTO.setKhachHang(receiptEntity.getCustomerEntity().getName());
-        receiptDTO.setTienHang(receiptDTO.getTienHang());
-        receiptDTO.setGiamGia(receiptDTO.getGiamGia());
+        receiptDTO.setTienHang(receiptEntity.getTongCong());
+        receiptDTO.setGiamGia(receiptEntity.getCk());
         return receiptDTO;
     }
 }

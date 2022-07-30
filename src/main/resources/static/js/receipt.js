@@ -108,7 +108,7 @@ function printInvoice() {
                 contentType:"application/json",
                 data:JSON.stringify({
                     soHoaDon:$("#sohoadon").text(),
-                    customeID:customeID?Number(customeID):null
+                    customerId:customeID?Number(customeID):null
                 }),
                 success:function(res){
                     ajaxrendercart();
