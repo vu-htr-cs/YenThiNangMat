@@ -7,6 +7,7 @@ import com.yenthinangmat.manager.repository.PNKRepository;
 import com.yenthinangmat.manager.service.PNKService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,5 +27,9 @@ public class PNKServiceImpl implements PNKService {
     @Override
     public List<PNKDTO> getAll() {
         return pnkRepository.findAll().stream().map(PNKMapper::toDTO).collect(Collectors.toList());
+    }
+    @Override
+    public List<PNKEntity> getFromStartToEnd(Date start, Date end){
+        return pnkRepository.getFromStartToEnd(start,end);
     }
 }

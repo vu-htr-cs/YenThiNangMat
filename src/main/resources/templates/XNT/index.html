@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Danh sách hóa đơn bán hàng')}"></div>
+    <style>
+        .thblock{
+            height: 40px;
+        }
+        .perthblock{
+            height: 25px;
+        }
+        .inblock{
+
+        }
+        .flexbt{
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div th:replace="~{fragments/layoutAdmin::navigation}"></div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!--list hoa don-->
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead class="thead-dark" style="background-color:black;color:white;">
+                        <tr>
+                            <th scope="col"><div class="thblock">
+                                <p style="font-weight: bold">STT</p>
+                            </div></th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Tên hàng</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                <p style="font-weight: bold">DVT</p>
+                            </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Giá nhập</p>
+                                </div>
+                            </th>
+                            <th scope="col" >
+                                <div class="thblock">
+                                    <div class="perthblock text-center">
+                                            <p style="font-weight: bold">Đầu kỳ</p>
+                                    </div>
+                                    <div class="perthblock flexbt">
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">SL đầu kỳ</p>
+                                        </div>
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">Tiền đầu kỳ</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th> <th scope="col" >
+                                <div class="thblock">
+                                    <div class="perthblock text-center">
+                                            <p style="font-weight: bold">Nhập trong kỳ</p>
+                                    </div>
+                                    <div class="perthblock flexbt">
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">SL nhập</p>
+                                        </div>
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">Tiền nhập</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th></th> <th scope="col" >
+                                <div class="thblock">
+                                    <div class="perthblock text-center">
+                                            <p style="font-weight: bold">Xuất trong kỳ</p>
+                                    </div>
+                                    <div class="perthblock flexbt">
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">SL xuất</p>
+                                        </div>
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">Tiền xuất</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th> </th></th> <th scope="col" >
+                                <div class="thblock">
+                                    <div class="perthblock text-center">
+                                            <p style="font-weight: bold">Tồn cuối kỳ</p>
+                                    </div>
+                                    <div class="perthblock flexbt">
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">SL tồn</p>
+                                        </div>
+                                        <div class="inblock">
+                                            <p style="font-weight: bold">Tiền tồn</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="ReceiptTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+</div>
+
+<div th:replace="~{fragments/layoutAdmin::jscript}"></div>
+
+</body>
+</html>

@@ -1,11 +1,14 @@
 package com.yenthinangmat.manager.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Entity
@@ -25,14 +28,6 @@ public class DetailReceiptEntity implements Serializable {
     @Column(name="ck")
     private byte ck;
 
-    public DetailReceiptEntity(String productName, int qty, byte ck, ReceiptEntity receiptEntity, ProductEntity drpID) {
-        this.productName = productName;
-        this.qty = qty;
-        this.ck = ck;
-        this.receiptEntity = receiptEntity;
-        this.drpID = drpID;
-    }
-
     @ManyToOne
     @JoinColumn(name = "receiptid",nullable = false)
     private ReceiptEntity receiptEntity;
@@ -40,6 +35,9 @@ public class DetailReceiptEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name="productid",nullable = false)//Khong duoc la unique
     private ProductEntity drpID;
+
+    @Column(name="create_at")
+    private Timestamp createAt;
 
 
 }

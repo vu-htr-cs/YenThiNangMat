@@ -4,14 +4,19 @@ import com.yenthinangmat.manager.dto.InventoryDTO;
 import com.yenthinangmat.manager.entity.InventoryEntity;
 import com.yenthinangmat.manager.mapper.InventoryMapper;
 import com.yenthinangmat.manager.repository.InventoryRepository;
+import com.yenthinangmat.manager.service.DetailReceiptService;
 import com.yenthinangmat.manager.service.InventoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
+    @Autowired
+    DetailReceiptService detailReceiptService;
     private final InventoryRepository inventoryRepository;
 
     public InventoryServiceImpl(InventoryRepository inventoryRepository) {

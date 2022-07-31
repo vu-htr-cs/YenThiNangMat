@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 
@@ -19,6 +21,9 @@ public class InventoryEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name="product_id",nullable = false)//Khong duoc la unique
     private ProductEntity inventory_pID;
+    @Column(name="soluong")
     private int soluong;
+    @Column(name="giavon")
     private int giavon;
+    
 }
