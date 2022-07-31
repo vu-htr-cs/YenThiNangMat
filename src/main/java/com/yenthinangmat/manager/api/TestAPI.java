@@ -1,6 +1,6 @@
 package com.yenthinangmat.manager.api;
 
-import com.yenthinangmat.manager.api.Output.XTNOutput;
+import com.yenthinangmat.manager.api.Output.XNTOutput;
 import com.yenthinangmat.manager.service.CtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class TestAPI {
     CtpService ctpService;
 
     @GetMapping("/api/admin/test")
-    public Collection<XTNOutput> methodTest(@RequestParam(name="start") String start, @RequestParam("end")String end) {
+    public Collection<XNTOutput> methodTest(@RequestParam(name="start") String start, @RequestParam("end")String end) {
         return ctpService.getXTNOutput(Date.valueOf(start), Date.valueOf(end)).values();
     }
 }

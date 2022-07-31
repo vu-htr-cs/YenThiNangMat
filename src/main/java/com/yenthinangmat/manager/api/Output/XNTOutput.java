@@ -5,9 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class XTNOutput {
+public class XNTOutput {
     private Long productId;
     private Long qty;
-    private Long giaVon;
+    private Long tongnhap;
     private Long slXuat=0L;
+    private String name;
+    private String dvt;
 }

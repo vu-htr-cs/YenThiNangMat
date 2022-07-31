@@ -1,6 +1,6 @@
 package com.yenthinangmat.manager.service.impl;
 
-import com.yenthinangmat.manager.api.Output.XTNOutput;
+import com.yenthinangmat.manager.api.Output.XNTOutput;
 import com.yenthinangmat.manager.entity.CtpEntity;
 import com.yenthinangmat.manager.entity.PNKEntity;
 import com.yenthinangmat.manager.repository.CtpRepository;
@@ -46,39 +46,43 @@ public class CtpServiceImpl implements CtpService {
     }
 
     @Override
-    public Map<Long,XTNOutput> getXTNOutput(Date start, Date end) {
+    public Map<Long, XNTOutput> getXTNOutput(Date start, Date end) {
         List<PNKEntity> temp = pnkService.getFromStartToEnd(start, end);//pnk trong khoang start-end
-        Map<Long, XTNOutput> mymap = new HashMap<>();
+        Map<Long, XNTOutput> mymap = new HashMap<>();
 
         temp.forEach(item -> {
             List<Object[]> myarr = ctpRepository.getAllByPNKGrb(item.getId());
             myarr.forEach(objectarr -> {
-                        XTNOutput xtn = mymap.get((Long)objectarr[0]);
+                        XNTOutput xtn = mymap.get((Long)objectarr[0]);
                         if (xtn == null) {
-                            xtn=new XTNOutput();
+                            xtn=new XNTOutput();
                             xtn.setProductId((long)objectarr[0]);
                             xtn.setQty((long) objectarr[1]);
-                            xtn.setGiaVon((long) objectarr[2]);
+                            xtn.setTongnhap((long) objectarr[2]);
+                            xtn.setName(productService.findOneE(xtn.getProductId()).getProduct_name() );
+                            xtn.setDvt(productService.findOneE(xtn.getProductId()).getUnitEntity().getName());
                             mymap.put(xtn.getProductId(),xtn);
                         }
                         else {
                             xtn.setQty(xtn.getQty()+(long) objectarr[1]);
-                            xtn.setGiaVon(xtn.getGiaVon()+(long) objectarr[2]);
+                            xtn.setTongnhap(xtn.getTongnhap()+(long) objectarr[2]);
                         }
                     }
             );
         });
         List<Object[]> temp123= detailReceiptService.getAllProductX(new Timestamp(start.getTime()),new Timestamp(end.getTime()));
         temp123.forEach(arr->{
-            XTNOutput product=mymap.get((Long)arr[0]);
+            XNTOutput product=mymap.get((Long)arr[0]);
             if(product!=null){
                 product.setSlXuat(product.getSlXuat()+(long) arr[1]);
             }
             else{
-                product=new XTNOutput();
+                product=new XNTOutput();
                 product.setProductId((long)arr[0]);// set Id
                 product.setQty(0L);
-                product.setGiaVon((long)productService.findOneE(product.getProductId()).getPrice());//set gia von
+                product.setTongnhap((long)productService.findOneE(product.getProductId()).getPrice());//set gia von
+                product.setName(productService.findOneE(product.getProductId()).getProduct_name() );
+                product.setDvt(productService.findOneE(product.getProductId()).getUnitEntity().getName());
                 product.setSlXuat((long) arr[1]);
             }
         });

@@ -47,79 +47,100 @@
                                     <p style="font-weight: bold">Giá nhập</p>
                                 </div>
                             </th>
-                            <th scope="col" >
+                            <th scope="col">
                                 <div class="thblock">
-                                    <div class="perthblock text-center">
-                                            <p style="font-weight: bold">Đầu kỳ</p>
-                                    </div>
-                                    <div class="perthblock flexbt">
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">SL đầu kỳ</p>
-                                        </div>
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">Tiền đầu kỳ</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th> <th scope="col" >
-                                <div class="thblock">
-                                    <div class="perthblock text-center">
-                                            <p style="font-weight: bold">Nhập trong kỳ</p>
-                                    </div>
-                                    <div class="perthblock flexbt">
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">SL nhập</p>
-                                        </div>
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">Tiền nhập</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th></th> <th scope="col" >
-                                <div class="thblock">
-                                    <div class="perthblock text-center">
-                                            <p style="font-weight: bold">Xuất trong kỳ</p>
-                                    </div>
-                                    <div class="perthblock flexbt">
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">SL xuất</p>
-                                        </div>
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">Tiền xuất</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th> </th></th> <th scope="col" >
-                                <div class="thblock">
-                                    <div class="perthblock text-center">
-                                            <p style="font-weight: bold">Tồn cuối kỳ</p>
-                                    </div>
-                                    <div class="perthblock flexbt">
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">SL tồn</p>
-                                        </div>
-                                        <div class="inblock">
-                                            <p style="font-weight: bold">Tiền tồn</p>
-                                        </div>
-                                    </div>
+                                    <p style="font-weight: bold">SL đầu kỳ</p>
                                 </div>
                             </th>
-
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Tiền DK</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">SL nhập</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Tiền nhập</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">SL xuất</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Tiền xuất</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">SL tồn</p>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">Tiền tồn</p>
+                                </div>
+                            </th>
                         </tr>
                         </thead>
-                        <tbody id="ReceiptTable">
+                        <tbody th:if="${res!=null}">
+                            <tr th:each="item,iState:${res}" th:with="giavon=${item.tongnhap/item.qty}">
+                                <td th:text="${iState.index + 1}"></td>
+                                <td th:text="${item.name}"></td>
+                                <td th:text="${item.dvt}"></td>
+                                <td th:text="${#numbers.formatDecimal(giavon, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td th:text="${item.qty}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${item.slXuat}"></td>
+                                <td>-</td>
+                                <td th:text="${item.qty - item.slXuat}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.tongnhap - item.slXuat*giavon, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
-            </div>
         </div>
         <!-- /.container-fluid -->
+    </div>
     </div>
 </div>
 
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
-
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var totalPage=/*[[${totalPage}]]*/ "default";
+    let page=/*[[${page}]]*/ 'ltuafed';
+    let htmlpagination = "";
+    for (let i = 1; i <= totalPage; i++) {
+        if (i == page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage("+i+")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    function getNextPage(page){
+        const params=new URLSearchParams(window.location.search)
+        window.location.href="/admin/xnt/"+page+"?start="+params.get('start') +"&end="+params.get('end');
+    }
+    $("#btn-dateSearch").click(function (){
+        let start=$("#start").val();
+        let end=$("#end").val();
+        if(start&&end){
+            window.location.href="/admin/xnt/1"+"?start="+start+"&end="+end;
+        }
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
