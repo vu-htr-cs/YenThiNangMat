@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and().
 //                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
                 authorizeRequests().
-                antMatchers("/","/signup","/api/user/**","/api/getproduct/**","/api/productsell/**","/api/auth/login").permitAll().
+                antMatchers("/","/signup","/api/user/**","/api/getproduct/**","/api/productsell/**","/api/auth/**").permitAll().
                 antMatchers("/employee/**","/api/cart/**","/api/pnkitem","/api/employee/**").hasRole("EMPLOYEE").
                 antMatchers(HttpMethod.PUT,"/api/cart/**").hasRole("EMPLOYEE").
                 antMatchers(HttpMethod.POST,"/api/pnkitem/**").hasRole("EMPLOYEE").

@@ -38,4 +38,21 @@ public class UserServiceImpl implements UserService {
             return res;
         }else return null;
     }
+
+    @Override
+    public boolean existByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public UserEntity saveE(UserEntity user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOne(Long id) {
+        userRepository.deleteAllById(id);
+    }
+
 }
