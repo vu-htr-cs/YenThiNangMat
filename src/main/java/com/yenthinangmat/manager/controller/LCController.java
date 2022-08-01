@@ -1,6 +1,5 @@
 package com.yenthinangmat.manager.controller;
 
-import com.yenthinangmat.manager.dto.CategoryDTO;
 import com.yenthinangmat.manager.dto.LocationStoreDTO;
 import com.yenthinangmat.manager.service.LCService;
 import org.springframework.stereotype.Controller;

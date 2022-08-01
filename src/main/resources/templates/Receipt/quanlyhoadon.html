@@ -74,8 +74,11 @@
                     </table>
                 </div>
             </div>
-            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
-
+            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}"></div>
+            <div class="row" style="background-color: #f8cdc4">
+                <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center"><p style="color:red;font-weight:bold;position:relative; top:5px;">Tổng cộng: <span id="tongcong"> 0 VND</span> </p></div>
+                <div class="col-lg-4 col-md-4 col-sm-4"></div>
             </div>
         </div>
         <!-- /.container-fluid -->

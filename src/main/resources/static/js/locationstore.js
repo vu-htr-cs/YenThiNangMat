@@ -13,6 +13,19 @@ function AjaxQuery(callbackf,url) {
         alert("Unable to connect server!")
     }
 }
+function LCPagination(res){
+    let htmlpagination = "";
+    for (let i = 1; i <= res.totalPage; i++) {
+        if (i == res.page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage(" + i + ")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    getCategory(res.list);
+
+}
 function getCategory(res){
     let html="";
     for (let i in res){
@@ -66,7 +79,7 @@ function addCategory(){
         }
     });
 }
-AjaxQuery(getCategory,"/api/employee/LocationStore/show");
+AjaxQuery(LCPagination,"/api/employee/LocationStore/1");
 function deleteCate(){
     let res=[];
     document.querySelectorAll(".cate-record").forEach(item=>{
@@ -79,7 +92,7 @@ function deleteCate(){
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getCategory,"/api/employee/LocationStore/show");
+                AjaxQuery(LCPagination,"/api/employee/LocationStore/1");
                 $("#formDeleteCategory").hide();
             },
             error: function (error) {
@@ -99,3 +112,14 @@ function deleteCate(){
         document.querySelectorAll(".lc-record").forEach(item=>item.checked=false);
     }});
 })();
+
+function getNextPage(page) {
+    $.ajax({
+        url: "/api/employee/LocationStore/" + page,
+        type: "GET",
+        success: CategoryPagination,
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}

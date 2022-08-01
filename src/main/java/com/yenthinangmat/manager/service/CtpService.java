@@ -1,5 +1,6 @@
 package com.yenthinangmat.manager.service;
 
+import com.yenthinangmat.manager.api.Output.ProfitOutput;
 import com.yenthinangmat.manager.api.Output.XNTOutput;
 import com.yenthinangmat.manager.entity.CtpEntity;
 
@@ -11,4 +12,5 @@ public interface CtpService {
     CtpEntity saveE(CtpEntity ctpEntity);
     void saveEAll(Collection<CtpEntity> collection);
     Map<Long, XNTOutput> getXTNOutput(Date start, Date end);
+    Map<Long, ProfitOutput> getProfit(Date start, Date end);
 }

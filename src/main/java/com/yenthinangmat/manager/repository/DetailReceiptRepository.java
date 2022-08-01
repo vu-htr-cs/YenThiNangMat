@@ -15,4 +15,6 @@ public interface DetailReceiptRepository extends JpaRepository<DetailReceiptEnti
 
     @Query(" select de.drpID.id,sum(de.qty)from DetailReceiptEntity  de where de.createAt>?1 and de.createAt<?2 group by de.drpID.id")
     List<Object[]> getAllProductX(Timestamp start, Timestamp end);
+    @Query(" select de from DetailReceiptEntity  de where de.createAt>?1 and de.createAt<?2")
+    List<DetailReceiptEntity> getAllProductProfit(Timestamp start, Timestamp end);
 }

@@ -5,7 +5,7 @@ import com.yenthinangmat.manager.entity.UnitEntity;
 import com.yenthinangmat.manager.mapper.UnitMapper;
 import com.yenthinangmat.manager.repository.UnitRepository;
 import com.yenthinangmat.manager.service.UnitService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UnitServiceImpl implements UnitService {
@@ -62,5 +63,15 @@ public class UnitServiceImpl implements UnitService {
     @Override
     public UnitEntity findOneE(Long id) {
         return unitRepository.findFirstById(id);
+    }
+
+    @Override
+    public List<UnitDTO> getByPage(Pageable pageable) {
+        return unitRepository.findAll(pageable).get().map(item->UnitMapper.toDTO(item)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return unitRepository.count();
     }
 }

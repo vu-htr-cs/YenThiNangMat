@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -35,8 +34,9 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public InventoryEntity findOne(Long id) {
-        return inventoryRepository.findbyProductID(id);
+        return inventoryRepository.findFirstById(id);
     }
+
 
     @Override
     @Transactional
@@ -63,6 +63,11 @@ public class InventoryServiceImpl implements InventoryService {
             }
         });
         return mymap.values();
+    }
+
+    @Override
+    public List<InventoryEntity> findAllE(Long id) {
+        return inventoryRepository.findAllById(id);
     }
 
 }

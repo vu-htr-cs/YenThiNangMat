@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter

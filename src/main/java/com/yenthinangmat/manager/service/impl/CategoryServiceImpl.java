@@ -5,6 +5,7 @@ import com.yenthinangmat.manager.entity.CategoryEntity;
 import com.yenthinangmat.manager.mapper.CategoryMapper;
 import com.yenthinangmat.manager.repository.CategoryRepository;
 import com.yenthinangmat.manager.service.CategoryService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -62,5 +64,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryEntity findOneE(Long id) {
         return categoryRepository.findFirstById(id);
+    }
+
+    @Override
+    public List<CategoryDTO> getByPage(Pageable pageable) {
+        return categoryRepository.findAll(pageable).stream().map(item->CategoryMapper.toDTO(item)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return categoryRepository.count();
     }
 }

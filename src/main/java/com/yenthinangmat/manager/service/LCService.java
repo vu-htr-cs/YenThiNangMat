@@ -2,6 +2,7 @@ package com.yenthinangmat.manager.service;
 
 import com.yenthinangmat.manager.dto.LocationStoreDTO;
 import com.yenthinangmat.manager.entity.LocationStoreEntity;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface LCService {
 
     void update(LocationStoreDTO locationStoreDTO);
     LocationStoreEntity findOneE(Long id);
+    List<LocationStoreDTO> getByPage(Pageable pageable);
+    long count();
 }

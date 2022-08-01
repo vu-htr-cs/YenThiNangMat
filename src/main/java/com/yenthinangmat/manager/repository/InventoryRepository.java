@@ -6,16 +6,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
 public interface InventoryRepository extends JpaRepository<InventoryEntity,Long> {
 
-    @Query("select i from InventoryEntity i where i.inventory_pID.id=?1 ")
-    InventoryEntity findbyProductID(Long id);
+    InventoryEntity findFirstById(Long id);
 
     @Modifying
     @Query("update InventoryEntity i set i.soluong=i.soluong-?1 where i.inventory_pID.id=?2")
     void updateProduct(int soluong,Long id);
+    List<InventoryEntity> findAllById(Long id);
 }

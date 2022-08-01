@@ -2,7 +2,6 @@ package com.yenthinangmat.manager.config.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yenthinangmat.manager.entity.UserEntity;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

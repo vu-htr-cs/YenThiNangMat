@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -98,18 +96,38 @@ public class PNKItemServiceImpl implements PNKItemService {
             ctp.setPnk(pnk);
             ctp.setSoluong(item.getSoluong());
             ctp.setGiaVon(item.getGiavon());
-            InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());// them vao inventory
-            if (inventoryCur != null && inventoryCur.getGiavon()==item.getGiavon()) {//da co va trung gia von thi tang them so luong
-                inventoryCur.setSoluong(item.getSoluong()+ inventoryCur.getSoluong());
-                inventoryCur.setGiavon(item.getGiavon());
-                inventoryService.saveE(inventoryCur);
-            } else { //khong thi tao cai moi , trung sp nhung khac gia von
+
+//            InventoryEntity inventoryCur = inventoryService.findOne(item.getProductId());// them vao inventory
+//            if (inventoryCur != null && inventoryCur.getGiavon()==item.getGiavon()) {//da co va trung gia von thi tang them so luong
+//                inventoryCur.setSoluong(item.getSoluong()+ inventoryCur.getSoluong());
+//                inventoryCur.setGiavon(item.getGiavon());
+//                inventoryService.saveE(inventoryCur);
+//            } else { //khong thi tao cai moi , trung sp nhung khac gia von
+//                InventoryEntity inventory = new InventoryEntity();
+//                inventory.setInventory_pID(pe);
+//                inventory.setSoluong(item.getSoluong());
+//                inventory.setGiavon(item.getGiavon());
+//                inventoryService.saveE(inventory);
+//            }
+
+            List<InventoryEntity> inventoryWrapper=inventoryService.findAllE(item.getProductId());
+            boolean inside=false;
+            for(InventoryEntity inventoryCur : inventoryWrapper ){
+                if(inventoryCur.getGiavon()==item.getGiavon()){//tim thay va gia von nhap = gia von result trong kho
+                    inventoryCur.setSoluong(item.getSoluong()+ inventoryCur.getSoluong());
+                    inventoryService.saveE(inventoryCur);
+                    inside=true;
+                    break;
+                }
+            }
+            if(!inside){
                 InventoryEntity inventory = new InventoryEntity();
                 inventory.setInventory_pID(pe);
                 inventory.setSoluong(item.getSoluong());
                 inventory.setGiavon(item.getGiavon());
                 inventoryService.saveE(inventory);
             }
+
             return ctp;
         }).collect(Collectors.toList()));
         pnkService.save(pnk);

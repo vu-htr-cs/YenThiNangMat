@@ -25,6 +25,16 @@ function productPaganition(res) {
             "                                </tr>";
     }
     $("#ReceiptTable").html(html);
+    let sum=0;
+    if(listRes.length>1){
+        sum=listRes.map(e=>e.tienHang-e.giamGia).reduce((e1,e2)=>e1+e2);
+    }
+    else{
+        if(listRes.length===1){
+            sum=listRes[0].tienHang-listRes[0].giamGia;
+        }
+    }
+    document.getElementById("tongcong").innerText=sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 }
 
 function getNextPage(page) {

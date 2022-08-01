@@ -1,6 +1,5 @@
 package com.yenthinangmat.manager.dto;
 
-import com.yenthinangmat.manager.entity.DescriptionEntity;
 import lombok.Getter;
 import lombok.Setter;
 

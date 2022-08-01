@@ -13,7 +13,19 @@ function AjaxQuery(callbackf,url) {
         alert("Unable to connect server!")
     }
 }
+function UNOPagination(res){
+    let htmlpagination = "";
+    for (let i = 1; i <= res.totalPage; i++) {
+        if (i == res.page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage(" + i + ")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    getUNO(res.list);
 
+}
 function getUNO(res){
     let html="";
     for (let i in res){
@@ -62,7 +74,7 @@ function addUNO(){
         }
     });
 }
-AjaxQuery(getUNO,"/api/UnitOfMeasure");
+AjaxQuery(UNOPagination,"/api/user/UnitOfMeasure/1");
 function deleteCate(){
     let res=[];
     document.querySelectorAll(".unit-record").forEach(item=>{
@@ -75,7 +87,7 @@ function deleteCate(){
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getUNO,"/api/UnitOfMeasure");
+                AjaxQuery(UNOPagination,"/api/user/UnitOfMeasure/1");
                 $("#formDelete").hide();
             },
             error: function (error) {
@@ -93,3 +105,13 @@ function deleteCate(){
         document.querySelectorAll(".unit-record").forEach(item=>item.checked=false);
     }});
 })();
+function getNextPage(page) {
+    $.ajax({
+        url: "/api/user/UnitOfMeasure/" + page,
+        type: "GET",
+        success: CategoryPagination,
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}

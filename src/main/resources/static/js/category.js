@@ -13,7 +13,19 @@ function AjaxQuery(callbackf,url) {
         alert("Unable to connect server!")
     }
 }
+function CategoryPagination(res){
+    let htmlpagination = "";
+    for (let i = 1; i <= res.totalPage; i++) {
+        if (i == res.page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage(" + i + ")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    getCategory(res.list);
 
+}
 function getCategory(res){
     let html="";
     for (let i in res){
@@ -67,7 +79,7 @@ function addCategory(){
         }
     });
 }
-AjaxQuery(getCategory,"/api/user/category");
+AjaxQuery(CategoryPagination,"/api/admin/category/1");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".cate-record").forEach(item=>item.checked=true);
@@ -90,7 +102,7 @@ function deleteCate(){
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(getCategory, "/api/user/category");
+                AjaxQuery(CategoryPagination, "/api/admin/category/1");
                 $("#formDeleteCategory").hide();
             },
             error: function (error) {
@@ -101,4 +113,14 @@ function deleteCate(){
     else {
         alert("Vui lòng chọn nhóm hàng muốn xóa!"); $("#formDeleteCategory").hide();
     }
+}
+function getNextPage(page) {
+    $.ajax({
+        url: "/api/admin/category/" + page,
+        type: "GET",
+        success: CategoryPagination,
+        error: function (e) {
+            console.log(e);
+        }
+    });
 }

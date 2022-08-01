@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Danh sách hóa đơn bán hàng')}"></div>
+    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Báo cáo doanh thu')}"></div>
     <style>
         .thblock{
             height: 40px;
@@ -39,22 +39,12 @@
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                <p style="font-weight: bold">DVT</p>
-                            </div>
+                                    <p style="font-weight: bold">DVT</p>
+                                </div>
                             </th>
                             <th scope="col">
                                 <div class="thblock">
                                     <p style="font-weight: bold">Giá nhập</p>
-                                </div>
-                            </th>
-                            <th scope="col">
-                                <div class="thblock">
-                                    <p style="font-weight: bold">SL đầu kỳ</p>
-                                </div>
-                            </th>
-                            <th scope="col">
-                                <div class="thblock">
-                                    <p style="font-weight: bold">Tiền DK</p>
                                 </div>
                             </th>
                             <th scope="col">
@@ -64,52 +54,45 @@
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                    <p style="font-weight: bold">Tiền nhập</p>
+                                    <p style="font-weight: bold">Chi phí</p>
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                    <p style="font-weight: bold">SL xuất</p>
+                                    <p style="font-weight: bold">SL bán</p>
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                    <p style="font-weight: bold">Tiền xuất</p>
+                                    <p style="font-weight: bold">Doanh thu</p>
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                    <p style="font-weight: bold">SL tồn</p>
-                                </div>
-                            </th>
-                            <th scope="col">
-                                <div class="thblock">
-                                    <p style="font-weight: bold">Tiền tồn</p>
+                                    <p style="font-weight: bold">Lợi nhuận</p>
                                 </div>
                             </th>
                         </tr>
                         </thead>
                         <tbody th:if="${res!=null}">
-                            <tr th:each="item,iState:${res}" th:with="giavon=${item.tongnhap/item.qty}">
-                                <td th:text="${iState.index + 1}"></td>
-                                <td th:text="${item.name}"></td>
-                                <td th:text="${item.dvt}"></td>
-                                <td th:text="${#numbers.formatDecimal(giavon, 0, 'COMMA', 0, 'POINT')}"></td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td th:text="${item.qty}"></td>
-                                <td th:text="${#numbers.formatDecimal(item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td>
-                                <td th:text="${item.slXuat}"></td>
-                                <td>-</td>
-                                <td th:text="${item.qty - item.slXuat}"></td>
-                                <td th:text="${#numbers.formatDecimal(item.tongnhap - item.slXuat*giavon, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
-                            </tr>
+                        <tr th:each="item,iState:${res}" th:with="giavon=${item.tongnhap/item.qty}">
+                            <td th:text="${iState.index + 1}"></td>
+                            <td th:text="${item.name}"></td>
+                            <td th:text="${item.dvt}"></td>
+                            <td th:text="${#numbers.formatDecimal(giavon, 0, 'COMMA', 0, 'POINT')}"></td>
+
+                            <td th:text="${item.qty}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td>
+
+                            <td th:text="${item.slBan}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.tienBan,0, 'COMMA', 0, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.tienBan - item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
-        </div>
+            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}"></div>
             <div th:if="${tongCong!=null}" class="row" style="background-color: #f8cdc4">
                 <div class="col-lg-4 col-md-4 col-sm-4"></div>
                 <div class="col-lg-4 col-md-4 col-sm-4 text-center">
@@ -117,8 +100,8 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4"></div>
             </div>
-        <!-- /.container-fluid -->
-    </div>
+            <!-- /.container-fluid -->
+        </div>
     </div>
 </div>
 
@@ -138,13 +121,13 @@
     document.querySelector("#pagination").innerHTML = htmlpagination;
     function getNextPage(page){
         const params=new URLSearchParams(window.location.search)
-        window.location.href="/admin/xnt/"+page+"?start="+params.get('start') +"&end="+params.get('end');
+        window.location.href="/admin/profit/"+page+"?start="+params.get('start') +"&end="+params.get('end');
     }
     $("#btn-dateSearch").click(function (){
         let start=$("#start").val();
         let end=$("#end").val();
         if(start&&end){
-            window.location.href="/admin/xnt/1"+"?start="+start+"&end="+end;
+            window.location.href="/admin/profit/1"+"?start="+start+"&end="+end;
         }
     });
     /*]]>*/

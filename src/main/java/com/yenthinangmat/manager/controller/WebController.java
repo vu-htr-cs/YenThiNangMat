@@ -13,5 +13,4 @@ public class WebController {
     public String signUpPage(){
         return "/LGLO/signup";
     }
-
 }

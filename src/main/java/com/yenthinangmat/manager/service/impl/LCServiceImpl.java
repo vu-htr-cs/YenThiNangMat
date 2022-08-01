@@ -5,6 +5,7 @@ import com.yenthinangmat.manager.entity.LocationStoreEntity;
 import com.yenthinangmat.manager.mapper.LCMapper;
 import com.yenthinangmat.manager.repository.LocationStoreRepository;
 import com.yenthinangmat.manager.service.LCService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LCServiceImpl implements LCService {
@@ -63,5 +65,15 @@ public class LCServiceImpl implements LCService {
     @Override
     public LocationStoreEntity findOneE(Long id) {
         return locationStoreRepository.findFirstById(id);
+    }
+
+    @Override
+    public List<LocationStoreDTO> getByPage(Pageable pageable) {
+        return locationStoreRepository.findAll(pageable).get().map(item->LCMapper.toDTO(item)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return locationStoreRepository.count();
     }
 }

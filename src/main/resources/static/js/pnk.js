@@ -1,18 +1,13 @@
 
 function AjaxQuery(callbackf,url) {
-    const request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    try {
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                let res=JSON.parse(request.responseText);
-                callbackf(res);
-            }
+    $.ajax({
+        url:url,
+        type:"GET",
+        success:callbackf,
+        error:function(e){
+            console.log(e);
         }
-        request.send();
-    } catch (e) {
-        alert("Unable to connect server!")
-    }
+    });
 }
 $("#addProduct").click(addToTemp);
 function addToTemp(e){
@@ -124,6 +119,19 @@ function addPNK(){
         }
     });
 }
+function PNKPagination(res){
+    let htmlpagination = "";
+    for (let i = 1; i <= res.totalPage; i++) {
+        if (i == res.page) {
+            htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        } else {
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage(" + i + ")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+        }
+    }
+    document.querySelector("#pagination").innerHTML = htmlpagination;
+    RenderPNK(res.list);
+
+}
 function RenderPNK(res){
     let html="";
     for(let i in res){
@@ -143,7 +151,7 @@ function RenderPNK(res){
     }
     document.querySelector("#PNKTable").innerHTML=html;
 }
-AjaxQuery(RenderPNK,"/api/employee/pnk/show");
+AjaxQuery(PNKPagination,"/api/employee/pnk/1");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".pnk-record").forEach(item=>item.checked=true);
@@ -152,3 +160,13 @@ AjaxQuery(RenderPNK,"/api/employee/pnk/show");
         document.querySelectorAll(".pnk-record").forEach(item=>item.checked=false);
     }});
 })();
+function getNextPage(page) {
+    $.ajax({
+        url: "/api/employee/pnk/" + page,
+        type: "GET",
+        success: PNKPagination,
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
