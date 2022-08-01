@@ -29,7 +29,7 @@ public class ProfitController {
         if (!start.equals("None") && !end.equals("None")) {
             int offset = (page - 1) * 9;
             List<ProfitOutput> res = new ArrayList<>();
-            Collection<ProfitOutput> temp = ctpService.getProfit(Date.valueOf(start), Date.valueOf(end)).values();
+            Collection<ProfitOutput> temp = ctpService.getProfit(Date.valueOf(start), new Date(Date.valueOf(end).getTime()+(1000*60*60*24))).values();
             List<ProfitOutput> temp2 = temp.stream().toList();
             for (int i = offset; i < Math.min(offset + 9, temp.size()); i++) {
                 res.add(temp2.get(i));

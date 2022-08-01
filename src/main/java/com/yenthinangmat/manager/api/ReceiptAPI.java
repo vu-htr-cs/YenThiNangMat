@@ -24,42 +24,27 @@ public class ReceiptAPI {
     }
 
     @GetMapping("/api/admin/receipt/{page}")
-    public ReceiptOutput listReceipt(@PathVariable(name="page") int page,
-                                     @RequestParam(name ="start",required = false,defaultValue = "2022-07-29")String start,@RequestParam(name="end",required = false,defaultValue = "1970-01-01")String end){
-        ReceiptOutput receiptOutput=new ReceiptOutput();
+    public ReceiptOutput listReceipt(@PathVariable(name = "page") int page,
+                                     @RequestParam(name = "start") String start, @RequestParam(name = "end", required = false, defaultValue = "1970-01-01") String end) {
+        ReceiptOutput receiptOutput = new ReceiptOutput();
         receiptOutput.setPage(page);
-        if(start.equals("2022-07-29") && end.equals("1970-01-01")){
-            receiptOutput.setListReceipt(receiptService.getAll(PageRequest.of(page-1,9, Sort.by("ngayLap").descending())));
-            receiptOutput.setTotalPage((int)Math.ceil((double)receiptService.count()/9));
+        int offset = (page - 1) * 9;
+        List<ReceiptDTO> res = new ArrayList<>();
+        List<ReceiptDTO> temp;
+        temp = receiptService.
+                getAll(new Timestamp(Date.valueOf(start).getTime()), new Timestamp(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)).getTime()));
+        for (int i = offset; i < Math.min(offset + 9, temp.size()); i++) {
+            res.add(temp.get(i));
         }
-        else {
-            int offset=(page-1)*9;
-            List<ReceiptDTO> res=new ArrayList<>();
-            List<ReceiptDTO> temp;
-            if(!end.equals("1970-01-01")){
-                temp = receiptService.
-                        getAll(new Timestamp(Date.valueOf(start).getTime()), new Timestamp(Date.valueOf(end).getTime()));
-                for(int i=offset;i<Math.min(offset+9,temp.size());i++){
-                    res.add(temp.get(i));
-                }
-            }
-            else{
-                temp = receiptService.
-                        getAll(new Timestamp(Date.valueOf(start).getTime()), new Timestamp(new Date(System.currentTimeMillis()).getTime()));
-                for(int i=offset;i<Math.min(offset+9,temp.size());i++){
-                    res.add(temp.get(i));
-                }
-            }
-            receiptOutput.setListReceipt(res);
-            receiptOutput.setTotalPage((int)Math.ceil((double)temp.size()/9));
-
-        }
+        receiptOutput.setListReceipt(res);
+        receiptOutput.setTotalPage((int) Math.ceil((double) temp.size() / 9));
 
         return receiptOutput;
     }
+
     @DeleteMapping("/api/admin/receipt/delete")
-    public ResponseEntity<?> deleteReceipt(@RequestParam(name="listId") Long[] listId){
-        for(Long id:listId){
+    public ResponseEntity<?> deleteReceipt(@RequestParam(name = "listId") Long[] listId) {
+        for (Long id : listId) {
             receiptService.deleteOne(id);
         }
         return new ResponseEntity<>(HttpStatus.OK);

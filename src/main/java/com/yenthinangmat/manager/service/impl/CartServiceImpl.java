@@ -136,6 +136,7 @@ public class CartServiceImpl implements CartService {
             });
         });
         // da co 1 list sp va soluong can phai update
+        System.out.println(mymap);
         mymap.forEach((id,productqty)->{
             inventoryService.updateProductQty(productqty.getQty(),id);
         });
@@ -198,9 +199,7 @@ public class CartServiceImpl implements CartService {
             });
         });
         // 1 map ds san pham + soluong
-        mymap.forEach((id,productqty)->{
-            inventoryService.updateProductQty(productqty.getQty(),id);
-        });
+
         receiptEntity.setListDetail(mymap.values().stream().collect(Collectors.toList()));
     }
 

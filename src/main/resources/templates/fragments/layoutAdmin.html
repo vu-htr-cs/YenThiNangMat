@@ -211,6 +211,16 @@
   <script th:src="@{/js/morris.min.js}"></script>
   <script th:src="@{/js/morris-data.js}"></script>
   <script th:src="@{/js/startmin.js}"></script>
+  <script>
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = yyyy +'-' + mm + '-' + dd;
+    $("#start").val(today);
+    $("#end").val(today);
+  </script>
 </th:block>
 
 </body>

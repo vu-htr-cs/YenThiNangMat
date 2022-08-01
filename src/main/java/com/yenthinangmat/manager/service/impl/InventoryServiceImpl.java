@@ -41,25 +41,48 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public void updateProductQty(int soluong, Long id) {
-        inventoryRepository.updateProduct(soluong,id);
+        List<InventoryEntity> temp = inventoryRepository.findAllByPrdID(id);
+        for (int i = 0; i < temp.size(); i++) {
+            if (i != temp.size() - 1) {
+                if (soluong < temp.get(i).getSoluong()) {
+                    inventoryRepository.updateById(soluong, temp.get(i).getId());
+                    break;
+                }
+                if (soluong == temp.get(i).getSoluong()) {
+                    inventoryRepository.deleteById(temp.get(i).getId());
+
+                    break;
+                }
+                if (soluong > temp.get(i).getSoluong()) {
+                    inventoryRepository.deleteById(temp.get(i).getId());
+                    soluong -= temp.get(i).getSoluong();
+                }
+            }
+            else {
+                if (soluong == temp.get(i).getSoluong()) {
+                    inventoryRepository.deleteById(temp.get(i).getId());
+                } else {
+                    inventoryRepository.updateById(soluong, temp.get(i).getId());
+                }
+            }
+        }
     }
 
     @Override
     public Collection<InventoryDTO> getByPage() {
-        List<InventoryEntity> temp =inventoryRepository.findAll().stream().toList();
-        List<InventoryDTO> res=new ArrayList<>();
-        Map<Long,InventoryDTO> mymap=new HashMap<>();
-        temp.forEach(item->{
-            InventoryDTO inventoryDTO= mymap.get(item.getInventory_pID().getId());
-            if(inventoryDTO==null){
+        List<InventoryEntity> temp = inventoryRepository.findAll().stream().toList();
+        List<InventoryDTO> res = new ArrayList<>();
+        Map<Long, InventoryDTO> mymap = new HashMap<>();
+        temp.forEach(item -> {
+            InventoryDTO inventoryDTO = mymap.get(item.getInventory_pID().getId());
+            if (inventoryDTO == null) {
                 //Tao moi, tong ton kho = giavon*soluong;
-                InventoryDTO newInventory=InventoryMapper.toDTO(item);
-                newInventory.setTienTonKho(item.getGiavon()*item.getSoluong());
-                mymap.put(item.getInventory_pID().getId(),newInventory);
-            }
-            else{
-                inventoryDTO.setSoluong(inventoryDTO.getSoluong()+ item.getSoluong());
-                inventoryDTO.setTienTonKho(inventoryDTO.getTienTonKho()+ item.getSoluong()*item.getGiavon());
+                InventoryDTO newInventory = InventoryMapper.toDTO(item);
+                newInventory.setTienTonKho(item.getGiavon() * item.getSoluong());
+                mymap.put(item.getInventory_pID().getId(), newInventory);
+            } else {
+                inventoryDTO.setSoluong(inventoryDTO.getSoluong() + item.getSoluong());
+                inventoryDTO.setTienTonKho(inventoryDTO.getTienTonKho() + item.getSoluong() * item.getGiavon());
             }
         });
         return mymap.values();

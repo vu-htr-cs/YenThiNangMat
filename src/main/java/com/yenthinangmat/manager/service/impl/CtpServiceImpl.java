@@ -86,6 +86,7 @@ public class CtpServiceImpl implements CtpService {
                 product.setName(productService.findOneE(product.getProductId()).getProduct_name());//set name
                 product.setDvt(productService.findOneE(product.getProductId()).getUnitEntity().getName());//set dvt
                 product.setSlXuat((long) arr[1]);
+                mymap.put(product.getProductId(),product);
             }
         });
         return mymap;//san pham, so luong gia von trong start-end
@@ -128,6 +129,7 @@ public class CtpServiceImpl implements CtpService {
 
                 product.setSlBan(item.getQty());
                 product.setTienBan((1 - item.getCk() / 100) * (pe.getPrice() * item.getQty()));
+                mymap.put(product.getProductId(),product);
             } else {
                 product.setSlBan(product.getSlBan() + item.getQty());
                 product.setTienBan(product.getTienBan() + (1 - item.getCk() / 100) * (pe.getPrice() * item.getQty()));
