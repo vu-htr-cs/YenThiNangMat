@@ -5,6 +5,7 @@ import com.yenthinangmat.manager.dto.request.InvoiceRequest;
 import com.yenthinangmat.manager.entity.ReceiptEntity;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface ReceiptService extends BaseService {
     List<ReceiptDTO> getAll(Pageable pageable);
     List<ReceiptDTO> getAll(Timestamp start,Timestamp end);
     List<String> getDetail(Long id);
+    List<ReceiptEntity> getEntity(Timestamp start, Timestamp end);
 
 }

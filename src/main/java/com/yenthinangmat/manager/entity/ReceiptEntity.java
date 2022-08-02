@@ -35,5 +35,8 @@ public class ReceiptEntity implements Serializable {
     @OneToMany(mappedBy = "receiptEntity",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<DetailReceiptEntity> listDetail;
 
+    @OneToMany(mappedBy = "rDb",fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<DBillEntity> listDb;
+
 
 }

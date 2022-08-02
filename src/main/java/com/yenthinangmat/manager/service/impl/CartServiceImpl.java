@@ -1,21 +1,14 @@
 package com.yenthinangmat.manager.service.impl;
 
 import com.yenthinangmat.manager.entity.*;
-import com.yenthinangmat.manager.service.CartService;
-import com.yenthinangmat.manager.service.ComboService;
-import com.yenthinangmat.manager.service.InventoryService;
-import com.yenthinangmat.manager.service.ProductService;
+import com.yenthinangmat.manager.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @SessionScope
 @Service
@@ -26,14 +19,16 @@ public class CartServiceImpl implements CartService {
     ComboService comboService;
     final
     ProductService productService;
-
+    final
+    DBillService dBillService;
     Map<Long,CartItem> listProduct=new HashMap<>();
     Map<Long,CartItemCombo> listCombo=new HashMap<>();
 
-    public CartServiceImpl(InventoryService inventoryService, ComboService comboService, ProductService productService) {
+    public CartServiceImpl(InventoryService inventoryService, ComboService comboService, ProductService productService, DBillService dBillService) {
         this.inventoryService = inventoryService;
         this.comboService = comboService;
         this.productService = productService;
+        this.dBillService = dBillService;
     }
 
     @Override
@@ -136,10 +131,7 @@ public class CartServiceImpl implements CartService {
             });
         });
         // da co 1 list sp va soluong can phai update
-        System.out.println(mymap);
-        mymap.forEach((id,productqty)->{
-            inventoryService.updateProductQty(productqty.getQty(),id);
-        });
+        mymap.forEach((id,productqty)-> inventoryService.updateProductQty(productqty.getQty(),id));
         clear();
 
     }
@@ -163,6 +155,12 @@ public class CartServiceImpl implements CartService {
         Collection<CartItemCombo> mylistC=listCombo.values();
         Map<Long,DetailReceiptEntity> mymap=new HashMap<>();
         mylistP.forEach(item->{
+            DBillEntity template=new DBillEntity();
+            template.setQty(item.getQty());
+            template.setProductId(item.getProductId());
+            template.setComboId(0L);
+            template.setRDb(receiptEntity);
+            dBillService.saveE(template);
             DetailReceiptEntity detail=mymap.get(item.getProductId());
             if(detail==null){
                 detail=new DetailReceiptEntity();
@@ -180,6 +178,12 @@ public class CartServiceImpl implements CartService {
         });
         mylistC.forEach(item -> { //item la 1 combo
             List<ComboProductEntity> list=comboService.findOneE(item.getComboId()).getCplist();
+            DBillEntity template=new DBillEntity();
+            template.setQty(item.getQty());
+            template.setProductId(0L);
+            template.setComboId(item.getComboId());
+            template.setRDb(receiptEntity);
+            dBillService.saveE(template);
             list.forEach(comboproduct->{ //combo product la trong combo do co product nao- soluong bao nhieu
                 DetailReceiptEntity detail=mymap.get(comboproduct.getProduct().getId());
                 if(detail==null){
@@ -200,7 +204,7 @@ public class CartServiceImpl implements CartService {
         });
         // 1 map ds san pham + soluong
 
-        receiptEntity.setListDetail(mymap.values().stream().collect(Collectors.toList()));
+        receiptEntity.setListDetail(new ArrayList<>(mymap.values()));
     }
 
     public class ProductQty{

@@ -3,16 +3,19 @@
 <head>
     <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Báo cáo doanh thu')}"></div>
     <style>
-        .thblock{
+        .thblock {
             height: 40px;
         }
-        .perthblock{
+
+        .perthblock {
             height: 25px;
         }
-        .inblock{
+
+        .inblock {
 
         }
-        .flexbt{
+
+        .flexbt {
             display: flex;
             justify-content: space-between;
         }
@@ -29,9 +32,11 @@
                     <table class="table">
                         <thead class="thead-dark" style="background-color:black;color:white;">
                         <tr>
-                            <th scope="col"><div class="thblock">
-                                <p style="font-weight: bold">STT</p>
-                            </div></th>
+                            <th scope="col">
+                                <div class="thblock">
+                                    <p style="font-weight: bold">STT</p>
+                                </div>
+                            </th>
                             <th scope="col">
                                 <div class="thblock">
                                     <p style="font-weight: bold">Tên hàng</p>
@@ -75,7 +80,7 @@
                         </tr>
                         </thead>
                         <tbody th:if="${res!=null}">
-                            <tr th:each="item,iState:${res}" >
+                        <tr th:each="item,iState:${res}">
                             <td th:text="${iState.index + 1}"></td>
                             <td th:text="${item.name}"></td>
                             <td th:text="${item.dvt}"></td>
@@ -86,7 +91,19 @@
 
                             <td th:text="${item.slBan}"></td>
                             <td th:text="${#numbers.formatDecimal(item.tienBan,0, 'COMMA', 0, 'POINT')}"></td>
-                            <td th:text="${#numbers.formatDecimal(item.tienBan , 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
+                            <td th:text="${#numbers.formatDecimal(item.tienBan - item.qty * item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td>
+                            <!--Arithmetic Operation trong dau ${}-->
+                        </tr>
+                        <tr th:if="${page==totalPage}" th:each="item,iState:${comboL}">
+                            <td th:text="${iState.index + 1}"></td>
+                            <td th:text="${item.comboName}"></td>
+                            <td>Combo</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td th:text="${item.slBan}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.slBan * item.chenhLechGia,0, 'COMMA', 0, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.slBan * item.chenhLechGia,0, 'COMMA', 0, 'POINT')}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -96,7 +113,8 @@
             <div th:if="${tongCong!=null}" class="row" style="background-color: #f8cdc4">
                 <div class="col-lg-4 col-md-4 col-sm-4"></div>
                 <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-                    <p style="color:red;font-weight:bold;position:relative; top:5px;">Tổng cộng: <span th:text="${#numbers.formatDecimal(tongCong, 0, 'COMMA', 0, 'POINT')}"> </span> VND</p>
+                    <p style="color:red;font-weight:bold;position:relative; top:5px;">Tổng cộng: <span
+                            th:text="${#numbers.formatDecimal(tongCong, 0, 'COMMA', 0, 'POINT')}"> </span> VND</p>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4"></div>
             </div>
@@ -108,26 +126,28 @@
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var totalPage=/*[[${totalPage}]]*/ "default";
-    let page=/*[[${page}]]*/ 'ltuafed';
+    var totalPage =/*[[${totalPage}]]*/ "default";
+    let page =/*[[${page}]]*/ 'ltuafed';
     let htmlpagination = "";
     for (let i = 1; i <= totalPage; i++) {
         if (i == page) {
             htmlpagination += "<li class=\"page-item active\"><span class=\"page-link\">" + (i < 10 ? "0" : "") + i + ".</span></li>";
         } else {
-            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage("+i+")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
+            htmlpagination += "<li class=\"page-item\"><span class=\"page-link\"  onclick='getNextPage(" + i + ")' >" + (i < 10 ? "0" : "") + i + ".</span></li>";
         }
     }
     document.querySelector("#pagination").innerHTML = htmlpagination;
-    function getNextPage(page){
-        const params=new URLSearchParams(window.location.search)
-        window.location.href="/admin/profit/"+page+"?start="+params.get('start') +"&end="+params.get('end');
+
+    function getNextPage(page) {
+        const params = new URLSearchParams(window.location.search)
+        window.location.href = "/admin/profit/" + page + "?start=" + params.get('start') + "&end=" + params.get('end');
     }
-    $("#btn-dateSearch").click(function (){
-        let start=$("#start").val();
-        let end=$("#end").val();
-        if(start&&end){
-            window.location.href="/admin/profit/1"+"?start="+start+"&end="+end;
+
+    $("#btn-dateSearch").click(function () {
+        let start = $("#start").val();
+        let end = $("#end").val();
+        if (start && end) {
+            window.location.href = "/admin/profit/1" + "?start=" + start + "&end=" + end;
         }
     });
     /*]]>*/

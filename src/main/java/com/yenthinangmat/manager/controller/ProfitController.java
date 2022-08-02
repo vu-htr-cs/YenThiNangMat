@@ -1,5 +1,6 @@
 package com.yenthinangmat.manager.controller;
 
+import com.yenthinangmat.manager.api.Output.ComboProfitOutput;
 import com.yenthinangmat.manager.api.Output.ProfitOutput;
 import com.yenthinangmat.manager.service.CtpService;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ public class ProfitController {
             List<ProfitOutput> res = new ArrayList<>();
             Collection<ProfitOutput> temp = ctpService.getProfit(Date.valueOf(start), new Date(Date.valueOf(end).getTime()+(1000*60*60*24))).values();
             List<ProfitOutput> temp2 = temp.stream().toList();
+            List<ComboProfitOutput> combo=ctpService.getComboProfit(Date.valueOf(start), new Date(Date.valueOf(end).getTime()+(1000*60*60*24)));
+
+            //xu ly phân trang
             for (int i = offset; i < Math.min(offset + 9, temp.size()); i++) {
                 res.add(temp2.get(i));
             }
@@ -38,9 +42,13 @@ public class ProfitController {
             for (ProfitOutput profitOutput : temp2) {
                 tongcong += (long) profitOutput.getTienBan() - profitOutput.getQty()* profitOutput.getGiaVon();
             }
+            for(ComboProfitOutput cb:combo){
+                tongcong+= (long) cb.getChenhLechGia() * cb.getSlBan();
+            }
+            model.addAttribute("comboL",combo);
             model.addAttribute("res", res);
             model.addAttribute("page", page);
-            model.addAttribute("totalPage", (int) Math.ceil((double) temp.size() / 9));
+            model.addAttribute("totalPage", (int) Math.ceil((double) (temp.size()+combo.size())/ 9));
             model.addAttribute("tongCong",tongcong);
         }
         return "Profit/baocaodoanhthu";

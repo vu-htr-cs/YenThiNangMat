@@ -85,4 +85,9 @@ public class ReceiptServiceImpl implements ReceiptService {
         return temp.stream().map(item->
              item.getProductName()+" x"+item.getQty() +", CK:"+item.getCk()+"%").collect(Collectors.toList());
     }
+
+    @Override
+    public List<ReceiptEntity> getEntity(Timestamp start, Timestamp end) {
+        return receiptRepository.getAllFromStarToEnd(start,end);
+    }
 }

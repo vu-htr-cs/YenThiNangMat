@@ -1,11 +1,9 @@
 package com.yenthinangmat.manager.service.impl;
 
+import com.yenthinangmat.manager.api.Output.ComboProfitOutput;
 import com.yenthinangmat.manager.api.Output.ProfitOutput;
 import com.yenthinangmat.manager.api.Output.XNTOutput;
-import com.yenthinangmat.manager.entity.CtpEntity;
-import com.yenthinangmat.manager.entity.DetailReceiptEntity;
-import com.yenthinangmat.manager.entity.PNKEntity;
-import com.yenthinangmat.manager.entity.ProductEntity;
+import com.yenthinangmat.manager.entity.*;
 import com.yenthinangmat.manager.repository.CtpRepository;
 import com.yenthinangmat.manager.service.*;
 import org.springframework.stereotype.Service;
@@ -13,10 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CtpServiceImpl implements CtpService {
@@ -28,13 +23,19 @@ public class CtpServiceImpl implements CtpService {
     ProductService productService;
     final
     InventoryService inventoryService;
+    final
+    ReceiptService receiptService;
+    final
+    ComboService comboService;
 
-    public CtpServiceImpl(CtpRepository ctpRepository, PNKService pnkService, DetailReceiptService detailReceiptService, ProductService productService, InventoryService inventoryService) {
+    public CtpServiceImpl(CtpRepository ctpRepository, PNKService pnkService, DetailReceiptService detailReceiptService, ProductService productService, InventoryService inventoryService, ReceiptService receiptService, ComboService comboService) {
         this.ctpRepository = ctpRepository;
         this.pnkService = pnkService;
         this.detailReceiptService = detailReceiptService;
         this.productService = productService;
         this.inventoryService = inventoryService;
+        this.receiptService = receiptService;
+        this.comboService = comboService;
     }
 
     @Override
@@ -139,6 +140,34 @@ public class CtpServiceImpl implements CtpService {
             }
         });
         return mymap;
+    }
+    public List<ComboProfitOutput> getComboProfit(Date start,Date end){
+        List<ReceiptEntity> listReceipt = receiptService.getEntity(new Timestamp(start.getTime()), new Timestamp(end.getTime()));
+        //chac chan co combo trung nhau => map
+        Map<Long,ComboProfitOutput> mymap=new HashMap<>();
+        listReceipt.forEach(item-> item.getListDb().forEach(product->{
+            if(product.getComboId()!=0){//neu nhu la combo
+                ComboProfitOutput combo=mymap.get(product.getComboId());
+                if(combo==null){
+                    ComboEntity cb=comboService.findOneE(product.getComboId());
+                    combo=new ComboProfitOutput();
+                    combo.setComboName(cb.getComboName());
+                    combo.setSlBan(product.getQty());
+                    int sum=0;
+                    for(ComboProductEntity cpe :cb.getCplist()){
+                        sum+=cpe.getQty()*cpe.getProduct().getPrice();
+                    }
+                    combo.setChenhLechGia( cb.getPrice() - sum  );
+                    mymap.put(product.getComboId(), combo);
+                }
+                else{
+                    combo.setSlBan(combo.getSlBan()+product.getQty());
+                }
+
+            }
+        }));
+        return new ArrayList<>(mymap.values());
+
     }
 
 }
