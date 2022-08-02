@@ -23,4 +23,6 @@ public interface InventoryRepository extends JpaRepository<InventoryEntity,Long>
     @Query("update InventoryEntity i set i.soluong=i.soluong-?1 where i.id=?2")
     void updateById(int soluong,Long InventoryID);
     void deleteById(Long id);
+    @Query("select i from InventoryEntity i where i.inventory_pID.id=?1")
+    List<InventoryEntity> findAllBypID(Long id);
 }

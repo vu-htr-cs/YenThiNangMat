@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Danh sách hóa đơn bán hàng')}"></div>
+    <div th:replace="~{fragments/layoutAdmin::header(pageTitle='Báo cáo xuất nhập tồn')}"></div>
     <style>
         .thblock{
             height: 40px;
@@ -54,11 +54,6 @@
                             </th>
                             <th scope="col">
                                 <div class="thblock">
-                                    <p style="font-weight: bold">Tiền DK</p>
-                                </div>
-                            </th>
-                            <th scope="col">
-                                <div class="thblock">
                                     <p style="font-weight: bold">SL nhập</p>
                                 </div>
                             </th>
@@ -90,19 +85,19 @@
                         </tr>
                         </thead>
                         <tbody th:if="${res!=null}">
-                            <tr th:each="item,iState:${res}" th:with=" giavon=${(item.qty==0)?0:item.tongnhap/item.qty}">
+                            <tr th:each="item,iState:${res}" >
                                 <td th:text="${iState.index + 1}"></td>
                                 <td th:text="${item.name}"></td>
                                 <td th:text="${item.dvt}"></td>
-                                <td th:text="${#numbers.formatDecimal(giavon, 0, 'COMMA', 0, 'POINT')}"></td>
-                                <td>-</td>
-                                <td>-</td>
+                                <td th:text="${#numbers.formatDecimal(item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${item.slDauky}"></td>
+
                                 <td th:text="${item.qty}"></td>
-                                <td th:text="${#numbers.formatDecimal(item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.qty * item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td>
                                 <td th:text="${item.slXuat}"></td>
                                 <td>-</td>
-                                <td th:text="${item.qty - item.slXuat}"></td>
-                                <td th:text="${#numbers.formatDecimal(item.tongnhap - item.slXuat*giavon, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
+                                <td th:text="${item.slDauky + item.qty - item.slXuat}"></td>
+                                <td th:text="${#numbers.formatDecimal( (item.slDauky + item.qty - item.slXuat )* item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
                             </tr>
                         </tbody>
                     </table>
@@ -110,13 +105,7 @@
             </div>
             <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
         </div>
-            <div th:if="${tongCong!=null}" class="row" style="background-color: #f8cdc4">
-                <div class="col-lg-4 col-md-4 col-sm-4"></div>
-                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-                    <p style="color:red;font-weight:bold;position:relative; top:5px;">Tổng cộng: <span th:text="${#numbers.formatDecimal(tongCong, 0, 'COMMA', 0, 'POINT')}"> </span> VND</p>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4"></div>
-            </div>
+
         <!-- /.container-fluid -->
     </div>
     </div>

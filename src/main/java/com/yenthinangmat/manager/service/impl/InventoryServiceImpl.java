@@ -6,7 +6,6 @@ import com.yenthinangmat.manager.mapper.InventoryMapper;
 import com.yenthinangmat.manager.repository.InventoryRepository;
 import com.yenthinangmat.manager.service.DetailReceiptService;
 import com.yenthinangmat.manager.service.InventoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,12 +13,13 @@ import java.util.*;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
-    @Autowired
+    final
     DetailReceiptService detailReceiptService;
     private final InventoryRepository inventoryRepository;
 
-    public InventoryServiceImpl(InventoryRepository inventoryRepository) {
+    public InventoryServiceImpl(InventoryRepository inventoryRepository, DetailReceiptService detailReceiptService) {
         this.inventoryRepository = inventoryRepository;
+        this.detailReceiptService = detailReceiptService;
     }
 
     @Override
@@ -93,4 +93,18 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryRepository.findAllById(id);
     }
 
+    @Override
+    public  int layGiaVon(Long id) {
+         List<InventoryEntity> res= inventoryRepository. findAllBypID(id);
+         int sum=0;
+         int slhang=0;
+         for(InventoryEntity item:res){
+             sum+=item.getGiavon()*item.getSoluong();
+             slhang+=item.getSoluong();
+         }
+         if(slhang!=0){
+             return sum/slhang;
+         }
+         else return 0;
+    }
 }

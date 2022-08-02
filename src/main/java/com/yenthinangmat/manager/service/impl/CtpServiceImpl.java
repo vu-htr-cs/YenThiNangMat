@@ -7,10 +7,7 @@ import com.yenthinangmat.manager.entity.DetailReceiptEntity;
 import com.yenthinangmat.manager.entity.PNKEntity;
 import com.yenthinangmat.manager.entity.ProductEntity;
 import com.yenthinangmat.manager.repository.CtpRepository;
-import com.yenthinangmat.manager.service.CtpService;
-import com.yenthinangmat.manager.service.DetailReceiptService;
-import com.yenthinangmat.manager.service.PNKService;
-import com.yenthinangmat.manager.service.ProductService;
+import com.yenthinangmat.manager.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,12 +26,15 @@ public class CtpServiceImpl implements CtpService {
     DetailReceiptService detailReceiptService;
     final
     ProductService productService;
+    final
+    InventoryService inventoryService;
 
-    public CtpServiceImpl(CtpRepository ctpRepository, PNKService pnkService, DetailReceiptService detailReceiptService, ProductService productService) {
+    public CtpServiceImpl(CtpRepository ctpRepository, PNKService pnkService, DetailReceiptService detailReceiptService, ProductService productService, InventoryService inventoryService) {
         this.ctpRepository = ctpRepository;
         this.pnkService = pnkService;
         this.detailReceiptService = detailReceiptService;
         this.productService = productService;
+        this.inventoryService = inventoryService;
     }
 
     @Override
@@ -61,13 +61,14 @@ public class CtpServiceImpl implements CtpService {
                             xtn = new XNTOutput();
                             xtn.setProductId((long) objectarr[0]);
                             xtn.setQty((long) objectarr[1]);
-                            xtn.setTongnhap((long) objectarr[2]);
+
+                            xtn.setGiaVon(inventoryService.layGiaVon(xtn.getProductId()));
                             xtn.setName(productService.findOneE(xtn.getProductId()).getProduct_name());
                             xtn.setDvt(productService.findOneE(xtn.getProductId()).getUnitEntity().getName());
                             mymap.put(xtn.getProductId(), xtn);
                         } else {
                             xtn.setQty(xtn.getQty() + (long) objectarr[1]);
-                            xtn.setTongnhap(xtn.getTongnhap() + (long) objectarr[2]);
+
                         }
                     }
             );
@@ -81,11 +82,13 @@ public class CtpServiceImpl implements CtpService {
                 product = new XNTOutput();
                 product.setProductId((long) arr[0]);// set Id
                 product.setQty(0L);
-                product.setTongnhap(0L);
+
+                product.setGiaVon(inventoryService.layGiaVon(product.getProductId()));
 //                product.setTongnhap((long)productService.findOneE(product.getProductId()).getPrice());//set gia von
                 product.setName(productService.findOneE(product.getProductId()).getProduct_name());//set name
                 product.setDvt(productService.findOneE(product.getProductId()).getUnitEntity().getName());//set dvt
                 product.setSlXuat((long) arr[1]);
+
                 mymap.put(product.getProductId(),product);
             }
         });
@@ -103,13 +106,13 @@ public class CtpServiceImpl implements CtpService {
                             profit = new ProfitOutput();
                             profit.setProductId((long) objectarr[0]);
                             profit.setQty((long) objectarr[1]);
-                            profit.setTongnhap((long) objectarr[2]);
+                            profit.setGiaVon(inventoryService.layGiaVon(profit.getProductId()));
                             profit.setName(productService.findOneE(profit.getProductId()).getProduct_name());
                             profit.setDvt(productService.findOneE(profit.getProductId()).getUnitEntity().getName());
                             mymap.put(profit.getProductId(), profit);
                         } else {
                             profit.setQty(profit.getQty() + (long) objectarr[1]);
-                            profit.setTongnhap(profit.getTongnhap() + (long) objectarr[2]);
+
                         }
                     }
             );
@@ -123,7 +126,7 @@ public class CtpServiceImpl implements CtpService {
                 product = new ProfitOutput();
                 product.setProductId(item.getDrpID().getId());
                 product.setQty(0L);//den buoc nay ma null thi tuc la 0 nhap
-                product.setTongnhap(0L);
+                product.setGiaVon(inventoryService.layGiaVon(product.getProductId()));
                 product.setName(pe.getProduct_name());//set name
                 product.setDvt(pe.getUnitEntity().getName());//set dvt
 

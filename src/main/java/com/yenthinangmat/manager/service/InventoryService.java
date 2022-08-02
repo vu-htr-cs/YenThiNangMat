@@ -13,6 +13,8 @@ public interface InventoryService {
     void updateProductQty(int soluong,Long id);
     Collection<InventoryDTO> getByPage();
     List<InventoryEntity> findAllE(Long id);
+    int layGiaVon(Long id);
+
 
 
 }

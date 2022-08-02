@@ -36,7 +36,7 @@ public class ProfitController {
             }
             long tongcong=0;
             for (ProfitOutput profitOutput : temp2) {
-                tongcong += (long) profitOutput.getTienBan() - profitOutput.getTongnhap();
+                tongcong += (long) profitOutput.getTienBan() - profitOutput.getQty()* profitOutput.getGiaVon();
             }
             model.addAttribute("res", res);
             model.addAttribute("page", page);

@@ -75,18 +75,18 @@
                         </tr>
                         </thead>
                         <tbody th:if="${res!=null}">
-                        <tr th:each="item,iState:${res}" th:with=" giavon=${(item.qty==0)?0:item.tongnhap/item.qty}">
+                            <tr th:each="item,iState:${res}" >
                             <td th:text="${iState.index + 1}"></td>
                             <td th:text="${item.name}"></td>
                             <td th:text="${item.dvt}"></td>
-                            <td th:text="${#numbers.formatDecimal(giavon, 0, 'COMMA', 0, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td>
 
                             <td th:text="${item.qty}"></td>
-                            <td th:text="${#numbers.formatDecimal(item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(item.qty * item.giaVon, 0, 'COMMA', 0, 'POINT')}"></td>
 
                             <td th:text="${item.slBan}"></td>
                             <td th:text="${#numbers.formatDecimal(item.tienBan,0, 'COMMA', 0, 'POINT')}"></td>
-                            <td th:text="${#numbers.formatDecimal(item.tienBan - item.tongnhap, 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
+                            <td th:text="${#numbers.formatDecimal(item.tienBan , 0, 'COMMA', 0, 'POINT')}"></td> <!--Arithmetic Operation trong dau ${}-->
                         </tr>
                         </tbody>
                     </table>
