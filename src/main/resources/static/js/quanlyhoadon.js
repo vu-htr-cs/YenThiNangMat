@@ -41,10 +41,10 @@ function getNextPage(page) {
     let start=$("#start").val();
     let end=$("#end").val();
     if(!start&&!end){
-        return AjaxQuery(productPaganition, "/api/admin/receipt/" + page);
+        return AjaxQuery(productPaganition, "/api/employee/receipt/" + page);
     }
     else{
-        return AjaxQuery(productPaganition, "/api/admin/receipt/" + page +"?start="+start+"&end="+end);
+        return AjaxQuery(productPaganition, "/api/employee/receipt/" + page +"?start="+start+"&end="+end);
     }
 
 }
@@ -61,7 +61,6 @@ function AjaxQuery(callback,url){
         }
     });
 }
-AjaxQuery(productPaganition,"/api/admin/receipt/1");
 (function(){
     document.getElementById("validCheck").addEventListener("change",()=>{  if(document.getElementById("validCheck").checked){
         document.querySelectorAll(".receipt-record").forEach(item=>item.checked=true);
@@ -82,7 +81,7 @@ function deleteReceipt(){
             type: "DELETE",
             success: function (res) {
                 alert("Xóa thành công!");
-                AjaxQuery(productPaganition,"/api/admin/receipt/1");
+                AjaxQuery(productPaganition,"/api/employee/receipt/1");
                 $("#formDelete").hide();
             },
             error: function (error) {

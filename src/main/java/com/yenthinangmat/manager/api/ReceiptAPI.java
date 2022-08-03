@@ -23,7 +23,7 @@ public class ReceiptAPI {
         this.receiptService = receiptService;
     }
 
-    @GetMapping("/api/admin/receipt/{page}")
+    @GetMapping("/api/employee/receipt/{page}")
     public ReceiptOutput listReceipt(@PathVariable(name = "page") int page,
                                      @RequestParam(name = "start") String start, @RequestParam(name = "end", required = false, defaultValue = "1970-01-01") String end) {
         ReceiptOutput receiptOutput = new ReceiptOutput();

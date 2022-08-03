@@ -18,7 +18,7 @@ public class ReceiptController {
         this.receiptService = receiptService;
     }
 
-    @GetMapping("/admin/receipt")
+    @GetMapping("/employee/receipt")
     public String listReceipt(){
         return "Receipt/quanlyhoadon";
     }
