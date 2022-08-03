@@ -84,6 +84,28 @@
 <script th:src="@{js/popper.js}"></script>
 <script th:src="@{js/bootstrap.min.js}"></script>
 <script th:src="@{js/main.js}"></script>
+<script>
+    $("#btn-login").click(function (e){
+        e.preventDefault();
+        $.ajax({
+            url:"/api/auth/login",
+            type:"POST",
+            data:JSON.stringify({
+                "username":$("#username").val(),
+                "password":$("#password").val()
+            }),
+            contentType:"application/json",
+            success:function(){
+                window.location.href="/employee/sell";
+            },
+            error:function(){
+                window.location.href="/login?error";
+            }
+    });
+
+
+    });
+</script>
 </body>
 </html>
 

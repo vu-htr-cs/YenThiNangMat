@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,19 +48,22 @@ public class WebAPI {
     }
 
     @PostMapping("/api/auth/login")
-    public ResponseEntity<?> authLogin( @RequestBody SignInForm signInForm){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signInForm.getUsername(),signInForm.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token=jwtTokenProvider.generateToken(authentication);
-        UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
-        HttpHeaders headers= new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add("Set-cookie","jwt="+token);
-        return ResponseEntity.ok().headers(headers).body(new JwtResponse(userPrinciple.getUsername(),userPrinciple.getAuthorities()));
+    public ResponseEntity<?> authLogin( @RequestBody SignInForm signInForm) throws Exception{
+        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(signInForm.getUsername(),signInForm.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token=jwtTokenProvider.generateToken(authentication);
+            UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
+            HttpHeaders headers= new HttpHeaders();
+            headers.add(HttpHeaders.AUTHORIZATION, token);
+            headers.add("Set-cookie","jwt=Bearer "+token+";Max-Age=86400;Path=/;Secure;HttpOnly");
+            return ResponseEntity.ok().headers(headers).body(new JwtResponse(userPrinciple.getUsername(),userPrinciple.getAuthorities()));
+        }catch (BadCredentialsException e){
+            throw new Exception("Sai tài khoản hoặc mật khẩu");
+        }
     }
-    @PostMapping("/api/auth/signup")
+    @PostMapping("/api/admin/signup")
     public ResponseEntity<?> register(@RequestBody SignUpForm signUpForm){
         if(userService.existByUsername(signUpForm.getUsername())){
             return new ResponseEntity<>(new ResponseMessage("Tài khoản đã tồn tại! Vui lòng thử lại!"), HttpStatus.OK);
