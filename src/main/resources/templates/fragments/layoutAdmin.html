@@ -138,14 +138,14 @@
         <ul class="dropdown-menu dropdown-user">
           <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
           </li>
-          <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+          <li><a href="#"><i class="fa fa-shield fa-fw"></i> Đổi mật khẩu</a>
           </li>
           <li class="divider"></li>
           <li>
             <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
             <input type="submit" value="Logout" hidden>
           </form>
-            <a href="javascript: document.logoutForm.submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <a href="javascript: document.logoutForm.submit()"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
           </li>
         </ul>
       </li>

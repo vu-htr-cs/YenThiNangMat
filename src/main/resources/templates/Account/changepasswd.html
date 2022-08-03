@@ -16,9 +16,15 @@
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3 formpasswd">
                     <h1 class="text-center" style="font-weight:bold;color:#337ab7;">ĐỔI MẬT KHẨU</h1>
+                    <div th:if="${param.error}" class="alert alert-danger" style="color:red;font-weight:bold;">
+                        Đổi mật khẩu thất bại!
+                    </div>
+                    <div th:if="${param.success}" class="alert alert-success">
+                        Đổi mật khẩu thành công!
+                    </div>
                     <form method="post" id="passwordForm">
                         <div class="form-group">
-                        <label for="passwd">Mật khẩu hiện tại</label>
+                        <label for="passwd">Mật khẩu mới</label>
                         <input type="password" class="input-lg form-control" name="password1" id="passwd" autocomplete="off">
                         </div>
                         <div class="row">
@@ -32,7 +38,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                        <label for="passwd">Mật khẩu mới</label>
+                        <label for="passwd">Nhập lại mật khẩu mới</label>
                         <input type="password" class="input-lg form-control" name="password2" id="passwdConfirm" autocomplete="off">
                         </div>
                         <div class="row">
@@ -42,7 +48,7 @@
                             </div>
                         </div>
                         <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg"
-                               data-loading-text="Changing Password..." value="Đổi mật khẩu">
+                             id="btn-changepasswd"  data-loading-text="Changing Password..." value="Đổi mật khẩu">
                     </form>
                 </div><!--/col-sm-6-->
             </div><!--/row-->
@@ -50,63 +56,7 @@
 </div>
 <div th:replace="~{fragments/layoutAdmin::jscript}"></div>
 <script> document.querySelector(".navbar-default.sidebar").remove(); </script>
-<script>
-    $("input[type=password]").keyup(function () {
-        var ucase = new RegExp("[A-Z]+");
-        var lcase = new RegExp("[a-z]+");
-        var num = new RegExp("[0-9]+");
-
-        if ($("#password1").val().length >= 8) {
-            $("#8char").removeClass("glyphicon-remove");
-            $("#8char").addClass("glyphicon-ok");
-            $("#8char").css("color", "#00A41E");
-        } else {
-            $("#8char").removeClass("glyphicon-ok");
-            $("#8char").addClass("glyphicon-remove");
-            $("#8char").css("color", "#FF0004");
-        }
-
-        if (ucase.test($("#password1").val())) {
-            $("#ucase").removeClass("glyphicon-remove");
-            $("#ucase").addClass("glyphicon-ok");
-            $("#ucase").css("color", "#00A41E");
-        } else {
-            $("#ucase").removeClass("glyphicon-ok");
-            $("#ucase").addClass("glyphicon-remove");
-            $("#ucase").css("color", "#FF0004");
-        }
-
-        if (lcase.test($("#password1").val())) {
-            $("#lcase").removeClass("glyphicon-remove");
-            $("#lcase").addClass("glyphicon-ok");
-            $("#lcase").css("color", "#00A41E");
-        } else {
-            $("#lcase").removeClass("glyphicon-ok");
-            $("#lcase").addClass("glyphicon-remove");
-            $("#lcase").css("color", "#FF0004");
-        }
-
-        if (num.test($("#password1").val())) {
-            $("#num").removeClass("glyphicon-remove");
-            $("#num").addClass("glyphicon-ok");
-            $("#num").css("color", "#00A41E");
-        } else {
-            $("#num").removeClass("glyphicon-ok");
-            $("#num").addClass("glyphicon-remove");
-            $("#num").css("color", "#FF0004");
-        }
-
-        if ($("#password1").val() == $("#password2").val()) {
-            $("#pwmatch").removeClass("glyphicon-remove");
-            $("#pwmatch").addClass("glyphicon-ok");
-            $("#pwmatch").css("color", "#00A41E");
-        } else {
-            $("#pwmatch").removeClass("glyphicon-ok");
-            $("#pwmatch").addClass("glyphicon-remove");
-            $("#pwmatch").css("color", "#FF0004");
-        }
-    });
-</script>
+<script th:src="@{/js/Account/passwd.js}"></script>
 
 </body>
 </html>

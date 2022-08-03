@@ -19,9 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +75,26 @@ public class WebAPI {
         user.setListRole(temp);
         userService.saveE(user);
         return new ResponseEntity<>(new ResponseMessage("Tạo thành công!"),HttpStatus.OK);
+    }
+    @PostMapping("/api/auth/chgpasswd")
+    public ResponseEntity<?> changePassword(@RequestBody SignInForm signInForm, @RequestHeader("Cookie") String cookie){
+        String token=null;
+        String[] rawCookieParams=cookie.split(";");
+        for(String temp:rawCookieParams){
+            if(temp.trim().startsWith("jwt")){
+                token=temp.trim().replace("jwt=","");
+            }
+        }
+        if(token!=null&&token.startsWith("Bearer")){
+            token= token.replace("Bearer","").trim();
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        String username= jwtTokenProvider.getUserNameFromJWT(token.replace("Bearer","").trim());
+        UserEntity user=userService.findOneE(username);
+        user.setPassword(passwordEncoder.encode(signInForm.getPassword()));
+        userService.saveE(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
