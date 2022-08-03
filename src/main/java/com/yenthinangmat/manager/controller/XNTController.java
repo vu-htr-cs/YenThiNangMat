@@ -63,9 +63,14 @@ public class XNTController {
             for(int i=offset;i<Math.min(offset+9,temp.size());i++){
                 res.add(temp2.get(i));
             }
+            long tongcong=0;
+            for(XNTOutput item:temp2){
+                tongcong+=(item.getSlDauky()+item.getQty() - item.getSlXuat())*item.getGiaVon();
+            }
             model.addAttribute("res",res);
             model.addAttribute("page",page);
             model.addAttribute("totalPage",(int)Math.ceil((double)temp.size()/9));
+            model.addAttribute("tongCong",tongcong);
         }
         return"XNT/index";
     }

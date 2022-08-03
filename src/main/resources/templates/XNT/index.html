@@ -103,9 +103,15 @@
                     </table>
                 </div>
             </div>
-            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}">
-        </div>
-
+            <div class="row" th:insert="~{fragments/layoutAdmin::pagination}"></div>
+            <div th:if="${tongCong!=null}" class="row" style="background-color: #f8cdc4">
+                <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                    <p style="color:red;font-weight:bold;position:relative; top:5px;">Tổng cộng: <span
+                            th:text="${#numbers.formatDecimal(tongCong, 0, 'COMMA', 0, 'POINT')}"> </span> VND</p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4"></div>
+            </div>
         <!-- /.container-fluid -->
     </div>
     </div>
