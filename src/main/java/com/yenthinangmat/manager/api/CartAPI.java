@@ -1,12 +1,12 @@
 package com.yenthinangmat.manager.api;
 
+import com.yenthinangmat.manager.config.jwt.JwtTokenProvider;
 import com.yenthinangmat.manager.dto.request.InvoiceRequest;
 import com.yenthinangmat.manager.entity.*;
 import com.yenthinangmat.manager.service.CartService;
 import com.yenthinangmat.manager.service.ComboService;
 import com.yenthinangmat.manager.service.ProductService;
 import com.yenthinangmat.manager.service.ReceiptService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +19,17 @@ public class CartAPI {
     private final ProductService productService;
 
     private final ComboService comboService;
-    @Autowired
+    final
     ReceiptService receiptService;
+    final
+    JwtTokenProvider jwtTokenProvider;
 
-    public CartAPI(CartService cartService, ProductService productService, ComboService comboService) {
+    public CartAPI(CartService cartService, ProductService productService, ComboService comboService, ReceiptService receiptService, JwtTokenProvider jwtTokenProvider) {
         this.cartService = cartService;
         this.productService = productService;
         this.comboService = comboService;
+        this.receiptService = receiptService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/api/cart/product/add/{id}")
@@ -61,12 +65,12 @@ public class CartAPI {
     }
     @GetMapping("/api/cart/show")
     public CartOutPut show(){
-        CartOutPut cart=new CartOutPut();
+        CartOutPut cart= new CartOutPut();
         cart.listCombo=cartService.getAllCombo();
         cart.listProduct=cartService.getAllProduct();
         return cart;
     }
-    public class CartOutPut{
+    public static class CartOutPut{
         public Collection<CartItemCombo> listCombo;
         public Collection<CartItem> listProduct;
     }
@@ -107,11 +111,25 @@ public class CartAPI {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PostMapping("/api/cart/insertListInvoice")
-    public ResponseEntity<?> insertListInvoice(@RequestBody InvoiceRequest invoiceRequest){
-        ReceiptEntity receipt=receiptService.saveE(invoiceRequest,cartService.getCK(), cartService.getSubTotal());
-        cartService.fillListDetailReceipt(receipt);
-        receiptService.save(receipt);
-        cartService.saveInvoice();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> insertListInvoice(@RequestBody InvoiceRequest invoiceRequest,@RequestHeader("Cookie") String cookie){
+        String token=null;
+        String[] rawCookieParams=cookie.split(";");
+        for(String temp:rawCookieParams){
+            if(temp.trim().startsWith("jwt")){
+                token=temp.trim().replace("jwt=","");
+            }
+        }
+        if(token!=null&&token.startsWith("Bearer")){
+            token= token.replace("Bearer","").trim();
+            String username= jwtTokenProvider.getUserNameFromJWT(token.replace("Bearer","").trim());
+            ReceiptEntity receipt=receiptService.saveE(invoiceRequest,cartService.getCK(), cartService.getSubTotal(),username);
+            cartService.fillListDetailReceipt(receipt);
+            receiptService.save(receipt);
+            cartService.saveInvoice();
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
     }
 }

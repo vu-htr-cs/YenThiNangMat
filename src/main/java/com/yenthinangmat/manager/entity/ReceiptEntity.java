@@ -38,5 +38,8 @@ public class ReceiptEntity implements Serializable {
     @OneToMany(mappedBy = "rDb",fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST,CascadeType.REMOVE})
     private List<DBillEntity> listDb;
 
+    @Column(name="username")
+    private String username;
+
 
 }

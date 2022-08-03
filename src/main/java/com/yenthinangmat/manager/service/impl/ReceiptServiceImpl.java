@@ -37,11 +37,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     @Transactional
-    public ReceiptEntity saveE(InvoiceRequest invoiceRequest, int ck, int subtotal) {
+    public ReceiptEntity saveE(InvoiceRequest invoiceRequest, int ck, int subtotal,String username) {
         ReceiptEntity receiptEntity=new ReceiptEntity();
         receiptEntity.setCk(ck);
         receiptEntity.setTongCong(subtotal);
         receiptEntity.setShd(invoiceRequest.getSoHoaDon());
+        receiptEntity.setUsername(username);
         receiptEntity.setListDetail(new ArrayList<>());
         if(invoiceRequest.getCustomerId()!=null) {
             receiptEntity.setCustomerEntity(customerService.findOneE(invoiceRequest.getCustomerId()));

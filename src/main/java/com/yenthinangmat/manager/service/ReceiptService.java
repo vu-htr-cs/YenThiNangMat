@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface ReceiptService extends BaseService {
-    ReceiptEntity saveE(InvoiceRequest invoiceRequest,int ck,int subtotal);
+    ReceiptEntity saveE(InvoiceRequest invoiceRequest,int ck,int subtotal,String username);
     ReceiptEntity save(ReceiptEntity receiptEntity);
     List<ReceiptDTO> getAll(Pageable pageable);
     List<ReceiptDTO> getAll(Timestamp start,Timestamp end);
